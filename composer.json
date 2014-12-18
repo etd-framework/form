@@ -20,10 +20,9 @@
     "joomla/registry": "~1.0",
     "etdsolutions/application": "@dev"
   },
-  "target-dir": "EtdSolutions/Form",
   "autoload": {
-    "psr-0": {
-      "EtdSolutions\\Form": ""
+    "psr-4": {
+      "EtdSolutions\\Form\\": "src/"
     }
   }
 }
