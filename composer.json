@@ -1,0 +1,27 @@
+{
+  "name": "etdsolutions/form",
+  "type": "etd-package",
+  "description": "Package Form du Framework ETD",
+  "homepage": "https://github.com/etd-framework/form",
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "Jean-Baptiste Alleaume",
+      "email": "jb.alleaume@etd-solutions.com",
+      "homepage": "http://alleau.me",
+      "role": "Manager"
+    }
+  ],
+  "require": {
+    "php": ">=5.4",
+    "joomla/form": "~1.0",
+    "joomla/language": "~1.0",
+    "joomla/registry": "~1.0",
+    "etdsolutions/application": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "EtdSolutions\\Form\\": "src/"
+    }
+  }
+}
