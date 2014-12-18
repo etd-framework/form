@@ -1,6 +1,7 @@
 {
   "name": "etdsolutions/form",
   "type": "etd-package",
+  "minimum-stability": "dev",
   "description": "Package Form du Framework ETD",
   "homepage": "https://github.com/etd-framework/form",
   "license": "Apache-2.0",
