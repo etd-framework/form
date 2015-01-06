@@ -37,7 +37,10 @@ class MaskedTextField extends TextField {
             $doc = $app->getDocument();
             $options = array();
 
-            //$doc->addScript($app->get('uri.base.full') . "theme/js/vendor/jquery.maskedinput.min.js");
+            $min = ".min";
+            if (JDEBUG) {
+                $min = "";
+            }
 
             $js = "$('#" . $this->id . "').mask('" . addslashes($mask) . "'";
 
@@ -57,7 +60,7 @@ class MaskedTextField extends TextField {
 
             $js .= ");";
 
-            $doc->addDomReadyJS($js);
+            $doc->addDomReadyJS($js, false, "etdsolutions/jquery.maskedinput/jquery.maskedinput".$min);
         }
 
         return parent::getInput();
