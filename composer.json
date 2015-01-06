@@ -18,7 +18,11 @@
     "joomla/form": "2.*@dev",
     "joomla/language": "~1.0",
     "joomla/registry": "~1.0",
-    "etdsolutions/application": "@dev"
+    "etdsolutions/application": "@dev",
+    "etdsolutions/requirejs": "~2.1",
+    "etdsolutions/jquery": "~1.0",
+    "etdsolutions/domready": "@dev",
+    "etdsolutions/jquery.maskedinput": "~1.4"
   },
   "autoload": {
     "psr-4": {
