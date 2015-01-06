@@ -7,12 +7,12 @@
  * @author      ETD Solutions http://etd-solutions.com
  */
 
-namespace EtdSolutions\Form;
+namespace EtdSolutions\Form\Field;
 
 use Joomla\Form\Field;
 use Joomla\Language\Text;
 
-class Field_Boolean extends Field {
+class BooleanField extends Field {
 
     /**
      * The form field type.

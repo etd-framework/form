@@ -7,14 +7,14 @@
  * @author      ETD Solutions http://etd-solutions.com
  */
 
-namespace EtdSolutions\Form;
+namespace EtdSolutions\Form\Field;
 
 use Joomla\Form\Field;
 use Joomla\Language\Text;
 use Joomla\Registry\Registry;
 use SimpleXMLElement;
 
-class Field_Rights extends Field {
+class RightsField extends Field {
 
     /**
      * The form field type.

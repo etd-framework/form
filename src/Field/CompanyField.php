@@ -7,13 +7,13 @@
  * @author      ETD Solutions http://etd-solutions.com
  */
 
-namespace EtdSolutions\Form;
+namespace EtdSolutions\Form\Field;
 
 use EtdSolutions\Application\Web;
-use Joomla\Form\Field_List;
+use Joomla\Form\Field\ListField;
 use Joomla\Form\Html\Select as HtmlSelect;
 
-class Field_Company extends Field_List {
+class CompanyField extends ListField {
 
     /**
      * The form field type.

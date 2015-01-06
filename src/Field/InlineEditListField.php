@@ -10,10 +10,10 @@
 namespace EtdSolutions\Form;
 
 use EtdSolutions\Application\Web;
-use Joomla\Form\Field_List;
+use Joomla\Form\Field\ListField;
 use Joomla\Form\Html\Select as HtmlSelect;
 
-abstract class Field_InlineEditList extends Field_List {
+abstract class InlineEditListField extends ListField {
 
     /**
      * The form field type.

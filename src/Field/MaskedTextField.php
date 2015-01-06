@@ -7,13 +7,13 @@
  * @author      ETD Solutions http://etd-solutions.com
  */
 
-namespace EtdSolutions\Form;
+namespace EtdSolutions\Form\Field;
 
 use EtdSolutions\Application\Web;
-use Joomla\Form\Field_Text;
+use Joomla\Form\Field\TextField;
 use Joomla\Language\Text;
 
-class Field_MaskedText extends Field_Text {
+class MaskedTextField extends TextField {
 
     /**
      * The form field type.
@@ -37,7 +37,7 @@ class Field_MaskedText extends Field_Text {
             $doc = $app->getDocument();
             $options = array();
 
-            $doc->addScript($app->get('uri.base.full') . "theme/js/vendor/jquery.maskedinput.min.js");
+            //$doc->addScript($app->get('uri.base.full') . "theme/js/vendor/jquery.maskedinput.min.js");
 
             $js = "$('#" . $this->id . "').mask('" . addslashes($mask) . "'";
 
