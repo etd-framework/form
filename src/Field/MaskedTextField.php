@@ -60,7 +60,7 @@ class MaskedTextField extends TextField {
 
             $js .= ");";
 
-            $doc->addDomReadyJS($js, false, "etdsolutions/jquery.maskedinput/jquery.maskedinput".$min);
+            $doc->addDomReadyJS($js, false, "vendor/etdsolutions/jquery.maskedinput/jquery.maskedinput".$min);
         }
 
         return parent::getInput();
