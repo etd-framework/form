@@ -10,7 +10,6 @@
 namespace EtdSolutions\Form\Field;
 
 use Joomla\Form\Field;
-use Joomla\Language\Text;
 
 class BooleanField extends Field {
 
@@ -56,19 +55,19 @@ class BooleanField extends Field {
             $html .= '<input type="hidden" name="' . $this->name . '" value="' . $this->value . '">';
 
             if (empty($checked0)) {
-                $html .= Text::_('APP_GLOBAL_YES');
+                $html .= $this->getText()->translate('APP_GLOBAL_YES');
             } else {
-                $html .= Text::_('APP_GLOBAL_NO');
+                $html .= $this->getText()->translate('APP_GLOBAL_NO');
             }
 
         } else {
 
             $html .= '<div class="btn-group' . $class . '" data-toggle="buttons">
   <label class="btn' . $buttonClass . $active1 . '">
-    <input type="radio" name="' . $this->name . '" id="' . $this->id . '1"' . $checked1 . ' value="1"> ' . Text::_("APP_GLOBAL_YES") . '
+    <input type="radio" name="' . $this->name . '" id="' . $this->id . '1"' . $checked1 . ' value="1"> ' . $this->getText()->translate("APP_GLOBAL_YES") . '
   </label>
   <label class="btn' . $buttonClass . $active0 . '">
-    <input type="radio" name="' . $this->name . '" id="' . $this->id . '0"' . $checked0 . ' value="0"> ' . Text::_("APP_GLOBAL_NO") . '
+    <input type="radio" name="' . $this->name . '" id="' . $this->id . '0"' . $checked0 . ' value="0"> ' . $this->getText()->translate("APP_GLOBAL_NO") . '
   </label>
 </div>';
 

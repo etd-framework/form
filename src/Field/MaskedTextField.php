@@ -11,7 +11,6 @@ namespace EtdSolutions\Form\Field;
 
 use EtdSolutions\Application\Web;
 use Joomla\Form\Field\TextField;
-use Joomla\Language\Text;
 
 class MaskedTextField extends TextField {
 
@@ -28,7 +27,7 @@ class MaskedTextField extends TextField {
 
         $lang = Web::getInstance()->getLanguage();
         if ($lang->hasKey($mask)) {
-            $mask = Text::_($mask);
+            $mask = $this->getText()->translate($mask);
         }
 
         if (!empty($mask)) {

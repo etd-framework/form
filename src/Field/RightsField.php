@@ -10,7 +10,6 @@
 namespace EtdSolutions\Form\Field;
 
 use Joomla\Form\Field;
-use Joomla\Language\Text;
 use Joomla\Registry\Registry;
 use SimpleXMLElement;
 
@@ -46,9 +45,9 @@ class RightsField extends Field {
 
         $html[] = '<thead>';
         $html[] = '<tr>';
-        $html[] = '<th>' . Text::_('APP_GLOBAL_RIGHTS_HEADING_SECTION') . '</th>';
-        $html[] = '<th>' . Text::_('APP_GLOBAL_RIGHTS_HEADING_ACTION') . '</th>';
-        $html[] = '<th>' . Text::_('APP_GLOBAL_RIGHTS_HEADING_RIGHT') . '</th>';
+        $html[] = '<th>' . $this->getText()->translate('APP_GLOBAL_RIGHTS_HEADING_SECTION') . '</th>';
+        $html[] = '<th>' . $this->getText()->translate('APP_GLOBAL_RIGHTS_HEADING_ACTION') . '</th>';
+        $html[] = '<th>' . $this->getText()->translate('APP_GLOBAL_RIGHTS_HEADING_RIGHT') . '</th>';
         $html[] = '</tr>';
         $html[] = '</thead>';
 
@@ -83,24 +82,24 @@ class RightsField extends Field {
                 $html[] = '<tr>';
 
                 if ($i == 0) {
-                    $html[] = '<td class="section" rowspan="' . $rowspan . '"><span class="hasTooltip" title="' . Text::_($section->description) . '">' . Text::_($section->title) . '</td>';
+                    $html[] = '<td class="section" rowspan="' . $rowspan . '"><span class="hasTooltip" title="' . $this->getText()->translate($section->description) . '">' . $this->getText()->translate($section->title) . '</td>';
                 }
 
-                $html[] = '<td class="action"><span class="hasTooltip" title="' . Text::_($action->description) . '">' . Text::_($action->title) . '</td>';
+                $html[] = '<td class="action"><span class="hasTooltip" title="' . $this->getText()->translate($action->description) . '">' . $this->getText()->translate($action->title) . '</td>';
 
                 $html[] = '<td class="right">';
 
                 // Lecture seule
                 if ($readonly) {
                     if ($hasValue && empty($checked0)) {
-                        $html[] = Text::_('APP_GLOBAL_YES');
+                        $html[] = $this->getText()->translate('APP_GLOBAL_YES');
                     } else {
-                        $html[] = Text::_('APP_GLOBAL_NO');
+                        $html[] = $this->getText()->translate('APP_GLOBAL_NO');
                     }
                 } else {
                     $html[] = '<div class="btn-group" data-toggle="buttons">';
-                    $html[] = '<label class="btn btn-default btn-sm' . $labelClass1 . '"><input name="' . $this->name . '[' . $section->name . '][' . $action->name . ']" value="1" type="radio"' . $checked1 . '> ' . Text::_('APP_GLOBAL_YES') . '</label>';
-                    $html[] = '<label class="btn btn-default btn-sm' . $labelClass0 . '"><input name="' . $this->name . '[' . $section->name . '][' . $action->name . ']" value="0" type="radio"' . $checked0 . '> ' . Text::_('APP_GLOBAL_NO') . '</label>';
+                    $html[] = '<label class="btn btn-default btn-sm' . $labelClass1 . '"><input name="' . $this->name . '[' . $section->name . '][' . $action->name . ']" value="1" type="radio"' . $checked1 . '> ' . $this->getText()->translate('APP_GLOBAL_YES') . '</label>';
+                    $html[] = '<label class="btn btn-default btn-sm' . $labelClass0 . '"><input name="' . $this->name . '[' . $section->name . '][' . $action->name . ']" value="0" type="radio"' . $checked0 . '> ' . $this->getText()->translate('APP_GLOBAL_NO') . '</label>';
                     $html[] = '</div>';
                 }
 
@@ -131,7 +130,7 @@ class RightsField extends Field {
 
         // On contrôle que les données sont bien chargées.
         if ((!($data instanceof SimpleXMLElement)) && (!is_string($data))) {
-            throw new \RuntimeException(Text::_('APP_ERROR_RIGHTS_NOT_LOADED'));
+            throw new \RuntimeException($this->getText()->translate('APP_ERROR_RIGHTS_NOT_LOADED'));
         }
 
         // On initialise les actions.

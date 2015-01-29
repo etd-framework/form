@@ -62,13 +62,14 @@ abstract class InlineEditListField extends ListField {
 
     protected function getOptions() {
 
+        $htmlselect = new HtmlSelect();
         $options = array();
 
         $items = $this->loadItems();
 
         if (!empty($items)) {
             foreach ($items as $item) {
-                $options[] = HtmlSelect::option($item->value, $item->text);
+                $options[] = $htmlselect->option($item->value, $item->text);
             }
         }
 

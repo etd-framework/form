@@ -24,6 +24,7 @@ class CompanyField extends ListField {
 
     protected function getOptions() {
 
+        $htmlselect = new HtmlSelect();
         $options = parent::getOptions();
         $db = Web::getInstance()->getDb();
 
@@ -37,7 +38,7 @@ class CompanyField extends ListField {
         $companies = $db->loadObjectList();
 
         foreach ($companies as $company) {
-            $options[] = HtmlSelect::option($company->value, $company->text);
+            $options[] = $htmlselect->option($company->value, $company->text);
         }
 
         return $options;
