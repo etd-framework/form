@@ -9,6 +9,7 @@
 
 namespace EtdSolutions\Form;
 
+use EtdSolutions\Application\Web;
 use Joomla\Form\Form as JoomlaForm;
 use Joomla\Registry\Registry;
 
@@ -19,7 +20,17 @@ defined('_JEXEC') or die;
  */
 class Form extends JoomlaForm {
 
+    public function __construct($name, array $options = array()) {
+
+        parent::__construct($name, $options);
+
+        $app = Web::getInstance();
+        $this->setText($app->getText());
+
+    }
+
     public function getXML() {
+
         return $this->xml->asXML();
     }
 
