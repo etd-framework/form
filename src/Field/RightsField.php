@@ -13,6 +13,9 @@ use Joomla\Form\Field;
 use Joomla\Registry\Registry;
 use SimpleXMLElement;
 
+// Tooltip
+\EtdSolutions\Utility\HtmlUtility::tooltip();
+
 class RightsField extends Field {
 
     /**
