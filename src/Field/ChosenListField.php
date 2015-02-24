@@ -9,7 +9,7 @@
 
 namespace EtdSolutions\Form\Field;
 
-class ChosenListField extends \Joomla\Form\Field\TextField {
+class ChosenListField extends \Joomla\Form\Field\ListField {
 
     protected $type = 'ChosenList';
 
