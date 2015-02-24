@@ -9,7 +9,6 @@
 
 namespace EtdSolutions\Form\Field;
 
-use EtdSolutions\Application\Web;
 use Joomla\Form\Field\TextField;
 
 class MaskedTextField extends TextField {
@@ -24,16 +23,11 @@ class MaskedTextField extends TextField {
     protected function getInput() {
 
         $mask = $this->element['mask'];
-
-        $lang = Web::getInstance()->getLanguage();
-        if ($lang->hasKey($mask)) {
-            $mask = $this->getText()->translate($mask);
-        }
+        $mask = $this->getText()->translate($mask);
 
         if (!empty($mask)) {
 
-            $app = Web::getInstance();
-            $doc = $app->getDocument();
+            $doc = \EtdSolutions\Document\Document::getInstance();
             $options = array();
 
             $min = ".min";
