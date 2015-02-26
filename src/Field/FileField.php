@@ -75,6 +75,8 @@ class FileField extends \Joomla\Form\Field\FileField {
 
         }
 
+        $options['dropZoneEnabled'] = false;
+
         // JS
         $js = "$('#" . $this->id . "').fileinput(" . json_encode($options) . ")";
 
