@@ -15,9 +15,9 @@
   ],
   "require": {
     "php": ">=5.4",
-    "joomla/form": "2.*@dev",
-    "joomla/language": "2.*@dev",
-    "joomla/registry": "2.*@dev",
+    "joomla/form": "~2.0@dev",
+    "joomla/language": "~2.0@dev",
+    "joomla/registry": "~2.0@dev",
     "etdsolutions/application": "@dev",
     "etdsolutions/document": "@dev",
     "etdsolutions/requirejs": "~2.1",
