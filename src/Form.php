@@ -9,8 +9,8 @@
 
 namespace EtdSolutions\Form;
 
-use EtdSolutions\Application\Web;
 use Joomla\Form\Form as JoomlaForm;
+use Joomla\Form\FormHelper;
 use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die;
@@ -19,15 +19,6 @@ defined('_JEXEC') or die;
  * Extension du formulaire pour ajouter quelques fonctionnalités.
  */
 class Form extends JoomlaForm {
-
-    public function __construct($name, array $options = array()) {
-
-        parent::__construct($name, $options);
-
-        $app = Web::getInstance();
-        $this->setText($app->getText());
-
-    }
 
     public function getXML() {
 
@@ -82,6 +73,103 @@ class Form extends JoomlaForm {
 
         return $return;
 
+    }
+
+    protected function validateField(\SimpleXMLElement $element, $group = null, $value = null, Registry $input = null)
+    {
+        $valid = true;
+
+        // Check if the field is required.
+        $required = ((string) $element['required'] == 'true' || (string) $element['required'] == 'required');
+
+        if ($required)
+        {
+            // If the field is required and the value is empty return an error message.
+            if (($value === '') || ($value === null))
+            {
+                $translate = true;
+
+                if ($element['label'])
+                {
+                    $message = $translate ? $this->getText()->translate($element['label']) : $element['label'];
+                }
+                else
+                {
+                    $message = $translate ? $this->getText()->translate($element['name']) : $element['name'];
+                }
+
+                // TODO - Language strings for our packages should be defined and loaded into the language object
+                if ($translate)
+                {
+                    $message = $this->getText()->sprintf('JLIB_FORM_VALIDATE_FIELD_REQUIRED', $message);
+                }
+                else
+                {
+                    $message = sprintf('Field required: %s', $message);
+                }
+
+                return new \RuntimeException($message);
+            }
+        }
+
+        // Get the field validation rule.
+        if ($type = (string) $element['validate'])
+        {
+            // Load the Rule object for the field.
+            $rule = FormHelper::loadRuleClass($type);
+
+            // If the object could not be loaded return an error message.
+            if ($rule === false)
+            {
+                throw new \UnexpectedValueException(sprintf('%s::validateField() rule `%s` missing.', get_class($this), $type));
+            }
+
+            // Instantiate the Rule object
+            /** @var Rule $rule */
+            $rule = new $rule;
+
+            // Run the field validation rule test.
+            $valid = $rule->test($element, $value, $group, $input, $this);
+
+            // Check for an error in the validation test.
+            if ($valid instanceof \Exception)
+            {
+                return $valid;
+            }
+        }
+
+        // Check if the field is valid.
+        if ($valid === false)
+        {
+            // Does the field have a defined error message?
+            $message   = (string) $element['message'];
+            $translate = true;
+
+            if ($message)
+            {
+                $message = $translate ? $this->getText()->translate($element['message']) : $element['message'];
+
+                return new \UnexpectedValueException($message);
+            }
+            else
+            {
+                $message = $translate ? $this->getText()->translate($element['label']) : $element['label'];
+
+                // TODO - Language strings for our packages should be defined and loaded into the language object
+                if ($translate)
+                {
+                    $message = $this->getText()->sprintf('JLIB_FORM_VALIDATE_FIELD_INVALID', $message);
+                }
+                else
+                {
+                    $message = sprintf('JLIB_FORM_VALIDATE_FIELD_INVALID', $message);
+                }
+
+                return new \UnexpectedValueException($message);
+            }
+        }
+
+        return true;
     }
 
     /**
