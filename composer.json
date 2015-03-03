@@ -17,7 +17,7 @@
     "php": ">=5.4",
     "joomla/form": "2.*@dev",
     "joomla/language": "2.*@dev",
-    "joomla/registry": "~1.0",
+    "joomla/registry": "2.*@dev",
     "etdsolutions/application": "@dev",
     "etdsolutions/requirejs": "~2.1",
     "etdsolutions/jquery": "~1.0",
