@@ -9,21 +9,17 @@
 
 namespace EtdSolutions\Form\Field;
 
+use EtdSolutions\Utility\RequireJSUtility;
+
 class ChosenListField extends \Joomla\Form\Field\ListField {
 
     protected $type = 'ChosenList';
 
     protected function getInput() {
 
-        $doc = \EtdSolutions\Document\Document::getInstance();
-
-        $min = ".min";
-        if (JDEBUG) {
-            $min = "";
-        }
-
-        $doc->addRequireJSModule("chosen", "vendor/etdsolutions/chosen/chosen".$min, true, array("jquery"))
-            ->addDomReadyJS("$('.chosen-select').chosen();", false, "chosen, css!vendor/etdsolutions/chosen/chosen".$min.".css");
+        (new RequireJSUtility())
+            ->addRequireJSModule("chosen", "js/vendor/chosen.min", true, array("jquery"))
+            ->addDomReadyJS("$('.chosen-select').chosen();", false, "chosen, css!/css/vendor/chosen.min.css");
 
         if ($this->element['class']) {
             $this->element['class'] .= " chosen-select";

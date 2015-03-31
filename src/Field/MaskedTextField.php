@@ -9,6 +9,7 @@
 
 namespace EtdSolutions\Form\Field;
 
+use EtdSolutions\Utility\RequireJSUtility;
 use Joomla\Form\Field\TextField;
 
 class MaskedTextField extends TextField {
@@ -27,13 +28,7 @@ class MaskedTextField extends TextField {
 
         if (!empty($mask)) {
 
-            $doc = \EtdSolutions\Document\Document::getInstance();
             $options = array();
-
-            $min = ".min";
-            if (JDEBUG) {
-                $min = "";
-            }
 
             $js = "$('#" . $this->id . "').mask('" . addslashes($mask) . "'";
 
@@ -53,7 +48,8 @@ class MaskedTextField extends TextField {
 
             $js .= ");";
 
-            $doc->addDomReadyJS($js, false, "vendor/etdsolutions/jquery.maskedinput/jquery.maskedinput".$min);
+            (new RequireJSUtility())
+                ->addDomReadyJS($js, false, "js/vendor/jquery.maskedinput.min");
         }
 
         return parent::getInput();

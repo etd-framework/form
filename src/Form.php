@@ -9,16 +9,28 @@
 
 namespace EtdSolutions\Form;
 
+use Joomla\Database\DatabaseDriver;
 use Joomla\Form\Form as JoomlaForm;
 use Joomla\Form\FormHelper;
 use Joomla\Registry\Registry;
-
-defined('_JEXEC') or die;
 
 /**
  * Extension du formulaire pour ajouter quelques fonctionnalités.
  */
 class Form extends JoomlaForm {
+
+    /**
+     * @var DatabaseDriver $db
+     */
+    protected $db;
+
+    public function setDb(DatabaseDriver $db) {
+        $this->db = $db;
+    }
+
+    public function getDb() {
+        return $this->db;
+    }
 
     public function getXML() {
 

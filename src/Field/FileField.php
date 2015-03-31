@@ -9,6 +9,8 @@
 
 namespace EtdSolutions\Form\Field;
 
+use EtdSolutions\Utility\RequireJSUtility;
+
 class FileField extends \Joomla\Form\Field\FileField {
 
     /**
@@ -17,15 +19,6 @@ class FileField extends \Joomla\Form\Field\FileField {
      * @return  string  The field input markup.
      */
     protected function getInput() {
-
-        // Document
-        $doc = \EtdSolutions\Document\Document::getInstance();
-
-        // Debug
-        $min = ".min";
-        if (JDEBUG) {
-            $min = "";
-        }
 
         // Options
         $options = array(
@@ -83,15 +76,15 @@ class FileField extends \Joomla\Form\Field\FileField {
         if (isset($this->element['upload_uri'])) {
             $js .= ".on('fileuploaded', function(event, data, previewId, index) {
     \$('input[name=\"" . $this->name . "\"]').val(data.response.name);
-     console.log(data, \$('input[name=\"" . $this->name . "\"]').val());
 })";
         }
 
         $js .= ";";
 
         // On ajoute les ressources.
-        $doc->addRequireJSModule("fileinput", "vendor/kartik-v/bootstrap-fileinput/js/fileinput".$min, true, array("bootstrap", "jquery"))
-            ->addDomReadyJS($js, false, "fileinput, css!vendor/kartik-v/bootstrap-fileinput/css/fileinput" . $min .".css");
+        (new RequireJSUtility())
+            ->addRequireJSModule("fileinput", "js/vendor/fileinput.min", true, array("bootstrap", "jquery"))
+            ->addDomReadyJS($js, false, "fileinput, css!/css/vendor/fileinput.min.css");
 
         // Initialize some field attributes.
         $accept = $this->element['accept'] ? ' accept="' . (string) $this->element['accept'] . '"' : '';

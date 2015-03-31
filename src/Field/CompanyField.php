@@ -9,7 +9,6 @@
 
 namespace EtdSolutions\Form\Field;
 
-use EtdSolutions\Application\Web;
 use Joomla\Form\Field\ListField;
 use Joomla\Form\Html\Select as HtmlSelect;
 
@@ -26,7 +25,7 @@ class CompanyField extends ListField {
 
         $htmlselect = new HtmlSelect();
         $options = parent::getOptions();
-        $db = Web::getInstance()->getDb();
+        $db = $this->form->getDb();
 
         $db->setQuery(
           $db->getQuery(true)

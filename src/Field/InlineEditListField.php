@@ -9,6 +9,7 @@
 
 namespace EtdSolutions\Form;
 
+use EtdSolutions\Utility\RequireJSUtility;
 use Joomla\Form\Field\ListField;
 use Joomla\Form\Html\Select as HtmlSelect;
 
@@ -33,10 +34,10 @@ abstract class InlineEditListField extends ListField {
         // Est-on en mode "ajax" ?
         if ($ajax) {
 
-            $doc = \EtdSolutions\Document\Document::getInstance();
             $html = array();
 
-            $doc->addDomReadyJS("Form.prepareEditRow('#" . $this->id . "_row');");
+            (new RequireJSUtility())
+                ->addDomReadyJS("Form.prepareEditRow('#" . $this->id . "_row');");
 
             $this->element['class'] = isset($this->element['class']) ? $this->element['class'] . ' inline-edit-input' : 'inline-edit-input';
 
