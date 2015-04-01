@@ -25,6 +25,7 @@
     "etdsolutions/chosen": "~1.0",
     "etdsolutions/domready": "@dev",
     "etdsolutions/jquery.maskedinput": "~1.4",
+    "etdsolutions/bootstrap-tags-input": "~0.5",
     "kartik-v/bootstrap-fileinput": "~4.1"
   },
   "autoload": {
