@@ -20,6 +20,7 @@
     "joomla/registry": "2.0.*@dev",
     "etdsolutions/utility": "@dev",
     "etdsolutions/requirejs": "~2.1",
+    "etdsolutions/requirecss": "@dev",
     "etdsolutions/jquery": "~1.0",
     "etdsolutions/chosen": "~1.0",
     "etdsolutions/domready": "@dev",
