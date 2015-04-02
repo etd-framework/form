@@ -53,8 +53,8 @@ class TagsField extends \Joomla\Form\Field {
         // On charge le JS.
         (new RequireJSUtility())
             ->addRequireJSModule("bootstraptagsinput", "js/vendor/bootstrap-tagsinput", true, array("jquery"))
-            ->addRequireJSModule("json", "js/etdsolutions/utils/json")
-            ->addDomReadyJS($js, false, "bootstraptagsinput, js/etdsolutions/utils/json");
+            ->addRequireJSModule("json", "etdsolutions/utils/json")
+            ->addDomReadyJS($js, false, "bootstraptagsinput, etdsolutions/utils/json");
 
         $attr .= ' multiple';
 
