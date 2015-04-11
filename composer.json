@@ -28,6 +28,9 @@
     "etdsolutions/bootstrap-tags-input": "~0.5",
     "kartik-v/bootstrap-fileinput": "~4.1"
   },
+  "suggest": {
+    "etdsolutions/bootstrap-datepicker": "Pour utiliser le champ Date"
+  },
   "autoload": {
     "psr-4": {
       "EtdSolutions\\Form\\": "src/"
