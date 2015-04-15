@@ -9,6 +9,7 @@
 
 namespace EtdSolutions\Form;
 
+use Joomla\Application\AbstractApplication;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Form\Form as JoomlaForm;
 use Joomla\Form\FormHelper;
@@ -24,12 +25,25 @@ class Form extends JoomlaForm {
      */
     protected $db;
 
+    /**
+     * @var AbstractApplication $app
+     */
+    protected $app;
+
     public function setDb(DatabaseDriver $db) {
         $this->db = $db;
     }
 
+    public function setApplication(AbstractApplication $app) {
+        $this->app = $app;
+    }
+
     public function getDb() {
         return $this->db;
+    }
+
+    public function getApplication() {
+        return $this->app;
     }
 
     public function getXML() {
