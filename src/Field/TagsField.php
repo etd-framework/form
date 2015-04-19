@@ -18,24 +18,14 @@ class TagsField extends \Joomla\Form\Field {
 
     protected function getInput() {
 
-        $html = [];
         $attr = '';
-
-        $select = new HtmlSelect;
-
-        // Try to inject the text object into the field
-        try {
-            $select->setText($this->getText());
-        } catch (\RuntimeException $exception) {
-            // A Text object was not set, ignore the error and try to continue processing
-        }
+        $value = $this->value;
 
         // Initialize some field attributes.
         $attr .= $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
 
         // To avoid user's confusion, readonly="true" should imply disabled="true".
-        if ((string) $this->element['readonly'] == 'true' || (string) $this->element['disabled'] == 'true')
-        {
+        if ((string) $this->element['readonly'] == 'true' || (string) $this->element['disabled'] == 'true') {
             $attr .= ' disabled="disabled"';
         }
 
@@ -44,95 +34,57 @@ class TagsField extends \Joomla\Form\Field {
         // Initialize JavaScript field attributes.
         $attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
 
+        // Get the field options.
+        $items = (array) $this->getItems();
+
         $js = "var \$input = $('#".$this->id."');
-\$input.tagsinput();
-\$input.on('itemAdded itemRemoved', function(e) {
-    $('input[name=\"" . $this->name . "\"]').val(json.stringify(\$input.tagsinput('items')));
-})";
+var ".$this->id."_values = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('text'),
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  local: " . json_encode(array_values($items)) . "
+});
+".$this->id."_values.initialize();
+\$input.tagsinput({
+    itemValue: 'value',
+    itemText: 'text',
+    typeaheadjs : {
+        name: '".$this->id."_values',
+        displayKey: 'text',
+        source: ".$this->id."_values.ttAdapter()
+    }
+});";
+
+        if (is_array($value)) {
+            foreach ($value as $val) {
+                $js .= "\$input.tagsinput('add', " . json_encode($items[$val]) . ");";
+            }
+            $value = implode(",", $value);
+        } elseif (is_string($value) && !empty($value)) {
+            $ids = explode(",", $value);
+            foreach ($ids as $val) {
+                $js .= "\n\$input.tagsinput('add', " . json_encode($items[$val]) . ");";
+            }
+        }
 
         // On charge le JS.
         (new RequireJSUtility())
-            ->addRequireJSModule("bootstraptagsinput", "js/vendor/bootstrap-tagsinput", true, array("jquery"))
-            ->addRequireJSModule("json", "etdsolutions/utils/json")
-            ->addDomReadyJS($js, false, "bootstraptagsinput, etdsolutions/utils/json");
+            ->addRequireJSModule("typeahead", "js/vendor/typeahead.bundle.min", true, array("jquery"))
+            ->addRequireJSModule("bootstraptagsinput", "js/vendor/bootstrap-tagsinput.min", true, array("jquery", "typeahead"))
+            ->addDomReadyJS($js, false, "bootstraptagsinput");
 
-        $attr .= ' multiple';
+        return '<input type="text" id="' . $this->id . '" name="' . $this->name . '" value="' . htmlspecialchars($value) . '" ' . $attr . '>';
 
-        // Get the field options.
-		$options = (array) $this->getOptions();
-
-        $value = $this->value;
-
-        if (is_array($value)) {
-            $value = json_encode($value);
-        }
-
-        $html[] = $select->genericlist($options, '', trim($attr), 'value', 'text', null, $this->id);
-        $html[] = '<input type="hidden" name="' . $this->name . '" value="' . htmlspecialchars($value) . '">';
-
-        return implode($html);
     }
 
 
     /**
-     * Method to get the field options.
+     * Méthode pour récupérer les tags disponibles.
      *
-     * @return  array  The field option objects.
+     * @return  array  Les tags disponibles.
      */
-    protected function getOptions() {
-        $options = array();
+    protected function getItems() {
 
-        $select = new HtmlSelect;
-
-        // Try to inject the text object into the field
-        try {
-            $select->setText($this->getText());
-        } catch (\RuntimeException $exception) {
-            // A Text object was not set, ignore the error and try to continue processing
-        }
-
-        /** @var \SimpleXMLElement $option */
-        foreach ($this->element->children() as $option) {
-            // Only add <option /> elements.
-
-            if ($option->getName() != 'option') {
-                continue;
-            }
-
-            $text = $this->translateOptions
-                ? $this->getText()->alt(trim((string) $option), preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname))
-                : trim((string) $option);
-
-            // Create a new option object based on the <option /> element.
-            $tmp = $select->option((string) $option['value'], $text, 'value', 'text', ((string) $option['disabled'] == 'true'));
-
-            // Set some option attributes.
-            $tmp->class = (string) $option['class'];
-
-            // Set some JavaScript option attributes.
-            $tmp->onclick = (string) $option['onclick'];
-
-            // Add the option object to the result set.
-            $options[] = $tmp;
-        }
-
-        if ($this->value) {
-            $values = $this->value;
-
-            if (is_string($values)) {
-                $values = json_decode($values);
-            }
-
-            if ($values) {
-                foreach ($values as $value) {
-                    $options[] = $select->option($value, $value, 'value', 'text');
-                }
-            }
-        }
-
-        reset($options);
-
-        return $options;
+        return array();
     }
 
 }
