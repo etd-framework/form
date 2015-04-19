@@ -22,14 +22,15 @@
     "etdsolutions/requirejs": "~2.1",
     "etdsolutions/requirecss": "@dev",
     "etdsolutions/jquery": "~1.0",
-    "etdsolutions/chosen": "~1.0",
-    "etdsolutions/domready": "@dev",
-    "etdsolutions/jquery.maskedinput": "~1.4",
-    "etdsolutions/bootstrap-tags-input": "~0.5",
-    "kartik-v/bootstrap-fileinput": "~4.1"
+    "etdsolutions/domready": "@dev"
   },
   "suggest": {
-    "etdsolutions/bootstrap-datepicker": "Pour utiliser le champ Date"
+    "etdsolutions/chosen": "Pour utiliser le champ ChosenList",
+    "etdsolutions/jquery.maskedinput": "Pour utiliser le champ MaskedText",
+    "kartik-v/bootstrap-fileinput": "Pour utiliser le champ File",
+    "etdsolutions/bootstrap-datepicker": "Pour utiliser le champ Date",
+    "etdsolutions/bootstrap-tags-input": "Pour utiliser le champ Tags",
+    "twitter/typeahead.js": "Pour utiliser le champ Tags"
   },
   "autoload": {
     "psr-4": {
