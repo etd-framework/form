@@ -32,14 +32,21 @@ class DateField extends TextField {
      */
     protected function getInput() {
 
+        $language    = $this->element['language'] ? (string) $this->element['language'] : (new LanguageFactory())->getLanguage()->get('iso');
+        $format      = $this->element['format'] ? (string) $this->element['format'] : 'dd/mm/yyyy';
+        $orientation = $this->element['orientation'] ? (string) $this->element['orientation'] : 'default';
+
+
         $options = array(
-            'language' => (new LanguageFactory())->getLanguage()->get('iso'),
-            'format' => 'dd/mm/yyyy'
+            'language'    => $language,
+            'format'      => $format,
+            'orientation' => $orientation
         );
 
         (new RequireJSUtility())
-            ->addRequireJSModule("bootstrapdatepicker", "js/vendor/bootstrap-datepicker.min", true, array("jquery"))
-            ->addDomReadyJS("$('#" . $this->id . "').datepicker(" . json_encode($options) .")", false, "bootstrapdatepicker");
+            ->addRequireJSModule("bsdatepicker", "js/vendor/bootstrap-datepicker.min", true, array("jquery"))
+            ->addRequireJSModule("bsdatepickerfr", "js/vendor/bootstrap-datepicker.fr.min", true, array("bsdatepicker"))
+            ->addDomReadyJS("$('#" . $this->id . "').datepicker(" . json_encode($options) .")", false, "bsdatepicker, bsdatepickerfr");
 
         if ($this->element['class']) {
             $this->element['class'] .= ' date-picker';
