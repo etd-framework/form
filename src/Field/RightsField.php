@@ -9,12 +9,11 @@
 
 namespace EtdSolutions\Form\Field;
 
+use EtdSolutions\Acl\Acl;
+use EtdSolutions\Utility\RequireJSUtility;
 use Joomla\Form\Field;
 use Joomla\Registry\Registry;
 use SimpleXMLElement;
-
-// Tooltip
-\EtdSolutions\Utility\HtmlUtility::tooltip();
 
 class RightsField extends Field {
 
@@ -33,9 +32,14 @@ class RightsField extends Field {
     protected function getInput() {
 
         // Initialisation.
-        $actions = $this->getActions();
         $html = array();
-        $value = false;
+        $text = $this->getText();
+
+        // JS
+        (new RequireJSUtility())
+            ->addDomReadyJS("$('[data-toggle=\"tooltip\"], .hasTooltip').tooltip({container:'body',html:true});", false, "bootstrap")
+            ->addRequireJSModule("chosen", "js/vendor/chosen.min", true, array("jquery"))
+            ->addDomReadyJS("$('.chosen-select').chosen();", false, "chosen, css!/css/vendor/chosen.min.css");
 
         if (!empty($this->value)) {
             $value = new Registry($this->value);
@@ -44,85 +48,180 @@ class RightsField extends Field {
         $class = $this->element['class'] ? ' ' . (string)$this->element['class'] : '';
         $readonly = isset($this->element['readonly']) ? (bool)$this->element['readonly'] : false;
 
-        $html[] = '<table class="rights table table-condensed' . $class . '">';
+        // On récupère l'instance de gestion ACL.
+        $acl = Acl::getInstance($this->form->getDb());
 
-        $html[] = '<thead>';
-        $html[] = '<tr>';
-        $html[] = '<th>' . $this->getText()->translate('APP_GLOBAL_RIGHTS_HEADING_SECTION') . '</th>';
-        $html[] = '<th>' . $this->getText()->translate('APP_GLOBAL_RIGHTS_HEADING_ACTION') . '</th>';
-        $html[] = '<th>' . $this->getText()->translate('APP_GLOBAL_RIGHTS_HEADING_RIGHT') . '</th>';
-        $html[] = '</tr>';
-        $html[] = '</thead>';
+        // On récupère les sections et les actions.
+        $actions = $this->getActions();
 
-        $html[] = '<tbody>';
+        // On charge les groupes utilisateurs.
+        $groups = $this->getUserGroups();
 
-        // On parcourt les sections.
-        foreach ($actions as $section) {
+        // Building tab nav
+        $html[] = '<div role="tabpanel" class="nav-tabs-left">';
 
-            $rowspan = count($section->actions);
+        $html[] = '<ul class="nav nav-tabs" role="tablist">';
 
-            foreach ($section->actions as $i => $action) {
+        foreach ($groups as $i => $group) {
+            $tab_class = $i == 0 ? ' class="active"' : '';
+            $html[] = '<li role="presentation"' . $tab_class . '><a href="#group-' . $group->id . '" aria-controls="group-' . $group->id . '" role="tab" data-toggle="tab">';
+            $html[] = str_repeat('<span class="level">&ndash;</span> ', $curLevel = $group->level) . $group->title;
+            $html[] = '</a></li>';
+        }
 
-                $labelClass1 = '';
-                $checked1 = '';
-                $labelClass0 = ' active';
-                $checked0 = ' checked';
-                $hasValue = $value && $value->exists($section->name . "." . $action->name);
+        $html[] = '</ul>';
+        $html[] = '<div class="tab-content">';
 
-                if ($hasValue) {
-                    $v = $value->get($section->name . "." . $action->name, false);
-                    if ($v) {
-                        $labelClass1 = ' active';
-                        $checked1 = ' checked';
-                        $labelClass0 = '';
-                        $checked0 = '';
-                    } else {
-                        $labelClass0 = ' active';
-                        $checked0 = ' checked';
+        foreach ($groups as $i => $group) {
+
+            $tab_class = $i == 0 ? ' active' : '';
+
+            $html[] = '<div role="tabpanel" class="tab-pane' . $tab_class .'" id="group-' . $group->id . '">';
+
+            $html[] = '<table class="rights table table-condensed' . $class . '">';
+
+            $html[] = '<thead>';
+            $html[] = '<tr>';
+            $html[] = '<th>' . $text->translate('APP_GLOBAL_RIGHTS_HEADING_SECTION') . '</th>';
+            $html[] = '<th>' . $text->translate('APP_GLOBAL_RIGHTS_HEADING_ACTION') . '</th>';
+            $html[] = '<th>' . $text->translate('APP_GLOBAL_RIGHTS_HEADING_RIGHT') . '</th>';
+
+            if ($group->parent_id) {
+                $html[] = '<th id="aclactionth' . $group->value . '">';
+                $html[] = '<span class="acl-action">' . $text->translate('APP_GLOBAL_RIGHTS_HEADING_CALCULATED_SETTING') . '</span>';
+                $html[] = '</th>';
+            }
+
+            $html[] = '</tr>';
+            $html[] = '</thead>';
+
+            $html[] = '<tbody>';
+
+            // On parcourt les sections.
+            foreach ($actions as $section) {
+
+                $rowspan = count($section->actions);
+
+                foreach ($section->actions as $i => $action) {
+
+                    $html[] = '<tr>';
+
+                    if ($i == 0) {
+                        $html[] = '<td class="section" rowspan="' . $rowspan . '"><span class="hasTooltip" title="' . $text->translate($section->description) . '">' . $text->translate($section->title) . '</td>';
                     }
-                }
 
-                $html[] = '<tr>';
+                    $html[] = '<td class="action"><span class="hasTooltip" title="' . $text->translate($action->description) . '">' . $text->translate($action->title) . '</td>';
+                    $html[] = '<td class="right">';
 
-                if ($i == 0) {
-                    $html[] = '<td class="section" rowspan="' . $rowspan . '"><span class="hasTooltip" title="' . $this->getText()->translate($section->description) . '">' . $this->getText()->translate($section->title) . '</td>';
-                }
+                    $html[] = '<select class="chosen-select input-sm"'
+                        . ' name="' . $this->name . '[' . $section->name . '][' . $action->name . '][' . $group->id . ']"'
+                        . ' id="' . $this->id . '_' . $section->name . '_' . $action->name	. '_' . $group->id . '"'
+                        . ' title="' . $text->sprintf('APP_GLOBAL_RIGHTS_SELECT_ALLOW_DENY_GROUP', $text->translate($action->title), trim($group->title)) . '">';
 
-                $html[] = '<td class="action"><span class="hasTooltip" title="' . $this->getText()->translate($action->description) . '">' . $this->getText()->translate($action->title) . '</td>';
+                    // On récupère les droits pour l'action hérités pour le groupe.
+                    $inheritedRule = $acl->checkGroup($group->id, $section->name, $action->name);
 
-                $html[] = '<td class="right">';
+                    // On récupère les droits pour l'action NON HÉRITÉS pour le groupe.
+                    $assetRule = null;
 
-                // Lecture seule
-                if ($readonly) {
-                    if ($hasValue && empty($checked0)) {
-                        $html[] = $this->getText()->translate('APP_GLOBAL_YES');
-                    } else {
-                        $html[] = $this->getText()->translate('APP_GLOBAL_NO');
+                    $simple = $acl->getSimpleAcl();
+                    $res = $simple->isAllowedReturnResult($group->id, $section->name, $action->name)->collection;
+
+                    if ($res->count()) {
+                        $res->top();
+                        while($res->valid()) {
+                            $priority = $res->current()->getPriority();
+
+                            // La règle est appliqué à ce groupe en particulier si la priorité est à zero.
+                            if ($priority == 0) {
+                                $assetRule = $res->current()->getAction();
+                            }
+
+                            $res->next();
+                        }
                     }
-                } else {
-                    $html[] = '<div class="btn-group" data-toggle="buttons">';
-                    $html[] = '<label class="btn btn-default btn-sm' . $labelClass1 . '"><input name="' . $this->name . '[' . $section->name . '][' . $action->name . ']" value="1" type="radio"' . $checked1 . '> ' . $this->getText()->translate('APP_GLOBAL_YES') . '</label>';
-                    $html[] = '<label class="btn btn-default btn-sm' . $labelClass0 . '"><input name="' . $this->name . '[' . $section->name . '][' . $action->name . ']" value="0" type="radio"' . $checked0 . '> ' . $this->getText()->translate('APP_GLOBAL_NO') . '</label>';
-                    $html[] = '</div>';
+
+                    // Build the dropdowns for the permissions sliders
+
+                    // The parent group has "Not Set", all children can rightly "Inherit" from that.
+                    $html[] = '<option value=""' . ($assetRule === null ? ' selected="selected"' : '') . '>'
+                        . $text->translate(empty($group->parent_id) ? 'APP_GLOBAL_RIGHTS_NOT_SET' : 'APP_GLOBAL_RIGHTS_INHERITED') . '</option>';
+                    $html[] = '<option value="1"' . ($assetRule === true ? ' selected="selected"' : '') . '>' . $text->translate('APP_GLOBAL_RIGHTS_ALLOWED')
+                        . '</option>';
+                    $html[] = '<option value="0"' . ($assetRule === false ? ' selected="selected"' : '') . '>' . $text->translate('APP_GLOBAL_RIGHTS_DENIED')
+                        . '</option>';
+
+                    $html[] = '</select>&#160; ';
+
+                    // If this asset's rule is allowed, but the inherited rule is deny, we have a conflict.
+                    if (($assetRule === true) && ($inheritedRule === false)) {
+                        $html[] = $text->translate('APP_GLOBAL_RIGHTS_CONFLICT');
+                    }
+
+                    $html[] = '</td>';
+
+                    // Build the Calculated Settings column.
+                    // The inherited settings column is not displayed for the root group in global configuration.
+                    if ($group->parent_id) {
+
+                        $html[] = '<td headers="aclactionth' . $group->id . '">';
+
+                        // This is where we show the current effective settings considering currrent group, path and cascade.
+                        // Check whether this is a component or global. Change the text slightly.
+
+                        if ($acl->checkGroup($group->id, "app", "admin") !== true) {
+
+                            if ($inheritedRule === true) {
+                                $html[] = '<span class="label label-success">' . $text->translate('APP_GLOBAL_RIGHTS_ALLOWED') . '</span>';
+                            } elseif ($inheritedRule === false) {
+                                $html[] = '<span class="label label-danger">' . $text->translate('APP_GLOBAL_RIGHTS_NOT_ALLOWED') . '</span>';
+                            }
+
+                        } elseif ($section->name != 'app') {
+                                $html[] = '<span class="label label-success"><i class="fa fa-lock"></i> ' . $text->translate('APP_GLOBAL_RIGHTS_ALLOWED_ADMIN')
+                                    . '</span>';
+                        } else {
+
+                            // Special handling for  groups that have global admin because they can't  be denied.
+                            // The admin rights can be changed.
+
+                            if ($section->name === 'app' && $action->name === 'admin') {
+                                $html[] = '<span class="label label-success">' . $text->translate('APP_GLOBAL_RIGHTS_ALLOWED') . '</span>';
+                            } elseif ($inheritedRule === false) {
+                                // Other actions cannot be changed.
+                                $html[] = '<span class="label label-danger"><i class="fa fa-lock"></i> '
+                                    . $text->translate('APP_GLOBAL_RIGHTS_NOT_ALLOWED_ADMIN_CONFLICT') . '</span>';
+                            } else {
+                                $html[] = '<span class="label label-success"><i class="fa fa-lock"></i> ' . $text->translate('APP_GLOBAL_RIGHTS_ALLOWED_ADMIN')
+                                    . '</span>';
+                            }
+                        }
+
+                        $html[] = '</td>';
+                    }
+
+                    $html[] = '</tr>';
+
                 }
-
-                $html[] = '</td>';
-
-                $html[] = '</tr>';
 
             }
 
+
+            $html[] = '';
+            $html[] = '';
+            $html[] = '';
+            $html[] = '</tbody>';
+
+            $html[] = '</table>';
+
+            $html[] = '</div>';
+
         }
 
+        $html[] = '</div>';
+        $html[] = '</div>';
 
-        $html[] = '';
-        $html[] = '';
-        $html[] = '';
-        $html[] = '</tbody>';
-
-        $html[] = '</table>';
-
-        return implode("\n", $html);
+        return implode($html);
 
     }
 
@@ -173,6 +272,28 @@ class RightsField extends Field {
         }
 
         return $result;
+
+    }
+
+    /**
+     * Récupère les groupes utilisateurs.
+     *
+     * @return mixed
+     */
+    protected function getUserGroups() {
+
+        $db = $this->form->getDb();
+
+        $query = $db->getQuery(true)
+            ->select('a.id, a.title, COUNT(DISTINCT b.id) AS level, a.parent_id')
+            ->from('#__usergroups AS a')
+            ->join('LEFT', $db->quoteName('#__usergroups') . ' AS b ON a.lft > b.lft AND a.rgt < b.rgt')
+            ->group('a.id, a.title, a.lft, a.rgt, a.parent_id')
+            ->order('a.lft ASC');
+        $db->setQuery($query);
+        $options = $db->loadObjectList();
+
+        return $options;
 
     }
 }
