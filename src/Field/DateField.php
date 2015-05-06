@@ -11,9 +11,9 @@ namespace EtdSolutions\Form\Field;
 
 use EtdSolutions\Language\LanguageFactory;
 use EtdSolutions\Utility\RequireJSUtility;
-use Joomla\Form\Field\TextField;
+use Joomla\Form\Field;
 
-class DateField extends TextField {
+class DateField extends Field {
 
     /**
      * The name of the form field.
@@ -32,29 +32,95 @@ class DateField extends TextField {
      */
     protected function getInput() {
 
-        $language    = $this->element['language'] ? (string) $this->element['language'] : (new LanguageFactory())->getLanguage()->get('iso');
-        $format      = $this->element['format'] ? (string) $this->element['format'] : 'dd/mm/yyyy';
-        $orientation = $this->element['orientation'] ? (string) $this->element['orientation'] : 'default';
+        /**
+         * @var $db \Joomla\Database\DatabaseDriver
+         */
+        $db = $this->form->getDb();
+        $js = "";
 
+        $locale  = $this->element['locale'] ? (string) $this->element['locale'] : (new LanguageFactory())->getLanguage()->get('iso');
+        $format  = $this->element['format'] ? (string) $this->element['format'] : 'L';
+        $minDate = $this->element['minDate'] ? (string) $this->element['minDate'] : null;
+        $maxDate = $this->element['maxDate'] ? (string) $this->element['maxDate'] : null;
 
         $options = array(
-            'language'    => $language,
-            'format'      => $format,
-            'orientation' => $orientation
+            'locale'  => $locale,
+            'format'  => $format,
+            'icons' => array(
+                'time' => 'fa fa-clock-o',
+                'date' => 'fa fa-calendar',
+                'up' => 'fa fa-chevron-up',
+                'down' => 'fa fa-chevron-down',
+                'previous' => 'fa fa-chevron-left',
+                'next' => 'fa fa-chevron-right',
+                'today' => 'fa fa-dot-circle-o',
+                'clear' => 'fa fa-trash',
+                'close' => 'fa fa-times'
+            )
         );
 
-        (new RequireJSUtility())
-            ->addRequireJSModule("bsdatepicker", "js/vendor/bootstrap-datepicker.min", true, array("jquery"))
-            ->addRequireJSModule("bsdatepickerfr", "js/vendor/bootstrap-datepicker.fr.min", true, array("bsdatepicker"))
-            ->addDomReadyJS("$('#" . $this->id . "').datepicker(" . json_encode($options) .")", false, "bsdatepicker, bsdatepickerfr");
+        if (isset($minDate)) {
+            if (strpos($minDate, 'field:') !== false) {
 
-        if ($this->element['class']) {
-            $this->element['class'] .= ' date-picker';
-        } else {
-            $this->element['class'] = 'date-picker';
+                $fieldName = substr($minDate, 6);
+                $field     = $this->form->getField($fieldName);
+
+                if ($field !== false) {
+
+                    $js .= "$('#" . $field->id . "_picker').on('dp.change', function(e) {
+    $('#" . $this->id . "_picker').data('DateTimePicker').minDate(e.date);
+});\n";
+
+                }
+
+            } else {
+                $options['minDate'] = $minDate;
+            }
         }
 
-        return parent::getInput();
+        if (isset($maxDate)) {
+            if (strpos($maxDate, 'field:') !== false) {
+
+                $fieldName = substr($maxDate, 6);
+                $field     = $this->form->getField($fieldName);
+
+                if ($field !== false) {
+
+                    $js .= "$('#" . $field->id . "_picker').on('dp.change', function(e) {
+    $('#" . $this->id . "_picker').data('DateTimePicker').maxDate(e.date);
+});\n";
+
+                }
+
+            } else {
+                $options['maxDate'] = $maxDate;
+            }
+        }
+
+        $js .= "$('#" . $this->id . "_picker').datetimepicker(" . json_encode($options) .").on('dp.change', function(e) {
+    $('#" . $this->id . "').val(e.date.format('YYYY-MM-d HH:mm:ss'))
+});
+$('#" . $this->id . "_btn').on('click', function() {
+    $('#" . $this->id . "_picker').data('DateTimePicker').show();
+});";
+
+        (new RequireJSUtility())
+            ->addRequireJSModule("moment", "js/vendor/moment.min", true, array("jquery"))
+            ->addRequireJSModule("momentfr", "js/vendor/moment.fr", true, array("moment"))
+            ->addRequireJSModule("bsdatetimepicker", "js/vendor/bootstrap-datetimepicker.min", true, array("jquery", "bootstrap", "momentfr"))
+            ->addDomReadyJS($js, false, "bsdatetimepicker");
+
+        $html = array();
+
+        $html[] = '<div class="input-group date">';
+        $html[] = '<input type="text" id="' . $this->id . '_picker" class="form-control">';
+        $html[] = '<span class="input-group-addon" id="' . $this->id . '_btn">';
+        $html[] = '<span class="fa fa-calendar"></span>';
+        $html[] = '</span>';
+        $html[] = '</div>';
+        $html[] = '<input type="hidden" id="' . $this->id . '" name="' . $this->name . '" value="' . htmlspecialchars($this->value) . '">';
+
+        return implode($html);
 
     }
 

@@ -28,7 +28,7 @@
     "etdsolutions/chosen": "Pour utiliser le champ ChosenList",
     "etdsolutions/jquery.maskedinput": "Pour utiliser le champ MaskedText",
     "kartik-v/bootstrap-fileinput": "Pour utiliser le champ File",
-    "etdsolutions/bootstrap-datepicker": "Pour utiliser le champ Date",
+    "etdsolutions/bootstrap-datetimepicker": "Pour utiliser le champ Date",
     "etdsolutions/bootstrap-tags-input": "Pour utiliser le champ Tags",
     "twitter/typeahead.js": "Pour utiliser le champ Tags"
   },
