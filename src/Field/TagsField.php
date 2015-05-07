@@ -26,21 +26,23 @@ class TagsField extends ChosenListField {
 
     protected function getInput() {
 
+        $input = parent::getInput();
+
         // Valeurs personnalisés ?
         if ($this->allowCustom()) {
 
             $minTermLength = $this->element['minTermLength'] ? $this->element['minTermLength'] : 3;
 
-            $js = "var customTagPrefix = '#new#';
+            $js = "var customTagPrefix = '#etdnew#';
 
 // Méthode pour ajouter des tags quand on appuie sur la touche entrer.
-$('" . $this->id . "_chzn input').keyup(function(event) {
+$('#" . $this->id . "_chosen input').keyup(function(event) {
 
     // Le tag est plus long que le minimum requis et la touche entrer est appuyée.
     if (this.value && this.value.length >= " . $minTermLength . " && (event.which === 13 || event.which === 188)) {
 
         // On cherche un le résultat en surbrillance.
-        var highlighted = $('" . $this->id . "_chzn').find('li.active-result.highlighted').first();
+        var highlighted = $('#" . $this->id . "_chosen').find('li.active-result.highlighted').first();
 
         // On ajoute l'option en surbrillance
         if (event.which === 13 && highlighted.text() !== '') {
@@ -50,7 +52,7 @@ $('" . $this->id . "_chzn input').keyup(function(event) {
             $('" . $this->id . " option').filter(function () { return $(this).val() == customOptionValue; }).remove();
 
             // On sélection le résultat mis en surbrillance.
-            var tagOption = $('" . $this->id . " option').filter(function () { return $(this).html() == highlighted.text(); });
+            var tagOption = $('#" . $this->id . " option').filter(function () { return $(this).html() == highlighted.text(); });
             tagOption.attr('selected', 'selected');
 
         } else { // On ajoute l'option du tag personnalisé.
@@ -58,7 +60,7 @@ $('" . $this->id . "_chzn input').keyup(function(event) {
             var customTag = this.value;
 
             // Contrôle supplémentaire. On recherche si le tag personnalisé existe déjà (tapé plus rapidement que la requête AJAX)
-            var tagOption = $('" . $this->id . " option').filter(function () { return $(this).html() == customTag; });
+            var tagOption = $('#" . $this->id . " option').filter(function () { return $(this).html() == customTag; });
             if (tagOption.text() !== '') {
                 tagOption.attr('selected', 'selected');
             } else {
@@ -67,12 +69,13 @@ $('" . $this->id . "_chzn input').keyup(function(event) {
                 option.attr('selected','selected');
 
                 // On ajoute l'option et on met à jour le champ chosen.
-                $('" . $this->id . "').append(option);
+                $('#" . $this->id . "').append(option);
+
             }
         }
 
         this.value = '';
-        $('" . $this->id . "').trigger('liszt:updated');
+        $('#" . $this->id . "').trigger('chosen:updated');
         event.preventDefault();
 
     }
@@ -88,8 +91,6 @@ $('" . $this->id . "_chzn input').keyup(function(event) {
         if (is_string($this->value)) {
             $this->value = explode(',', $this->value);
         }
-
-        $input = parent::getInput();
 
         return $input;
     }
