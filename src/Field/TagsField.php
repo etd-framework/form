@@ -106,7 +106,7 @@ $('" . $this->id . "_chzn input').keyup(function(event) {
 
         $db    = $this->form->getDb();
         $query = $db->getQuery(true)
-                    ->select('DISTINCT a.id AS value, a.path, a.title AS text, a.level, a.published, a.lft')
+                    ->select('DISTINCT a.id AS value, a.path, a.title AS text, a.level')
                     ->from('#__tags AS a')
                     ->join('LEFT', '#__tags AS b ON a.lft > b.lft AND a.rgt < b.rgt');
 
@@ -121,13 +121,12 @@ $('" . $this->id . "_chzn input').keyup(function(event) {
 
         // Filtre par association.
         if ($table) {
-            $query->leftJoin('#__tags_map AS b ON b.table_id = a.id');
-            $query->where('b.table = ' . $db->quote($table));
+            $query->leftJoin('#__tags_map AS c ON c.table_id = b.id AND c.table_name = ' . $db->quote($table));
         }
 
         $query->order('a.lft ASC');
         $db->setQuery($query);
-
+//echo $query;
         try {
             $options = $db->loadObjectList();
         } catch (\RuntimeException $e) {
