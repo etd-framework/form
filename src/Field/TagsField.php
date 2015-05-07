@@ -121,12 +121,13 @@ $('" . $this->id . "_chzn input').keyup(function(event) {
 
         // Filtre par association.
         if ($table) {
-            $query->leftJoin('#__tags_map AS c ON c.table_id = b.id AND c.table_name = ' . $db->quote($table));
+            $query->leftJoin('#__tags_map AS c ON c.tag_id = a.id');
+            $query->where('c.table_name = ' . $db->quote($table));
         }
 
         $query->order('a.lft ASC');
         $db->setQuery($query);
-//echo $query;
+
         try {
             $options = $db->loadObjectList();
         } catch (\RuntimeException $e) {
