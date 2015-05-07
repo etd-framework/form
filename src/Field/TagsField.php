@@ -24,66 +24,6 @@ class TagsField extends ChosenListField {
      */
     public $isNested = null;
 
-    /* protected function getInput() {
-
-         $attr = '';
-         $value = $this->value;
-
-         // Initialize some field attributes.
-         $attr .= $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
-
-         // To avoid user's confusion, readonly="true" should imply disabled="true".
-         if ((string) $this->element['readonly'] == 'true' || (string) $this->element['disabled'] == 'true') {
-             $attr .= ' disabled="disabled"';
-         }
-
-         $attr .= $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
-
-         // Initialize JavaScript field attributes.
-         $attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
-
-         // Get the field options.
-         $items = (array) $this->getItems();
-
-         $js = "var \$input = $('#".$this->id."');
- var ".$this->id."_values = new Bloodhound({
-   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('text'),
-   queryTokenizer: Bloodhound.tokenizers.whitespace,
-   local: " . json_encode(array_values($items)) . "
- });
- ".$this->id."_values.initialize();
- \$input.tagsinput({
-     itemValue: 'value',
-     itemText: 'text',
-     typeaheadjs : {
-         name: '".$this->id."_values',
-         displayKey: 'text',
-         source: ".$this->id."_values.ttAdapter()
-     }
- });";
-
-         if (is_array($value)) {
-             foreach ($value as $val) {
-                 $js .= "\$input.tagsinput('add', " . json_encode($items[$val]) . ");";
-             }
-             $value = implode(",", $value);
-         } elseif (is_string($value) && !empty($value)) {
-             $ids = explode(",", $value);
-             foreach ($ids as $val) {
-                 $js .= "\n\$input.tagsinput('add', " . json_encode($items[$val]) . ");";
-             }
-         }
-
-         // On charge le JS.
-         (new RequireJSUtility())
-             ->addRequireJSModule("typeahead", "js/vendor/typeahead.bundle.min", true, array("jquery"))
-             ->addRequireJSModule("bootstraptagsinput", "js/vendor/bootstrap-tagsinput.min", true, array("jquery", "typeahead"))
-             ->addDomReadyJS($js, false, "bootstraptagsinput");
-
-         return '<input type="text" id="' . $this->id . '" name="' . $this->name . '" value="' . htmlspecialchars($value) . '" ' . $attr . '>';
-
-     }*/
-
     protected function getInput() {
 
         // Valeurs personnalisés ?
@@ -161,8 +101,8 @@ $('" . $this->id . "_chzn input').keyup(function(event) {
      */
     protected function getOptions() {
 
-        $published = $this->element['published'] ? $this->element['published'] : array(0, 1);
-        $table = $this->element['table'] ? $this->element['table'] : false;
+        $published = $this->element['published'] ? (string)$this->element['published'] : array(0, 1);
+        $table = $this->element['table'] ? (string)$this->element['table'] : false;
 
         $db    = $this->form->getDb();
         $query = $db->getQuery(true)
@@ -171,7 +111,6 @@ $('" . $this->id . "_chzn input').keyup(function(event) {
                     ->join('LEFT', '#__tags AS b ON a.lft > b.lft AND a.rgt < b.rgt');
 
         $query->where('a.lft > 0');
-
         // Filtre par état de publication
         if (is_numeric($published)) {
             $query->where('a.published = ' . (int)$published);
