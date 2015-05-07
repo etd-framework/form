@@ -10,6 +10,7 @@
 namespace EtdSolutions\Form\Field;
 
 use EtdSolutions\Language\LanguageFactory;
+use EtdSolutions\Utility\DateUtility;
 use EtdSolutions\Utility\RequireJSUtility;
 use Joomla\Form\Field;
 
@@ -32,10 +33,6 @@ class DateField extends Field {
      */
     protected function getInput() {
 
-        /**
-         * @var $db \Joomla\Database\DatabaseDriver
-         */
-        $db = $this->form->getDb();
         $js = "";
 
         $locale  = $this->element['locale'] ? (string) $this->element['locale'] : (new LanguageFactory())->getLanguage()->get('iso');
@@ -97,8 +94,18 @@ class DateField extends Field {
             }
         }
 
+        // Si on a une valeur.
+        if (!empty($this->value) && $this->value != $this->form->getDb()->getNullDate()) {
+
+            // La date venant du système est en UTC.
+            // On la formate avec le fuseau horaire de l'utilisateur.
+            $value = (new DateUtility($this->form->getApplication()->get('timezone')))->format($this->value, 'APP_GLOBAL_DATE_ISO');
+            $options['defaultDate'] = $value;
+
+        }
+
         $js .= "$('#" . $this->id . "_picker').datetimepicker(" . json_encode($options) .").on('dp.change', function(e) {
-    $('#" . $this->id . "').val(e.date.format('YYYY-MM-d HH:mm:ss'))
+    $('#" . $this->id . "').val(e.date.utc().format('YYYY-MM-DD HH:mm:ss'))
 });
 $('#" . $this->id . "_btn').on('click', function() {
     $('#" . $this->id . "_picker').data('DateTimePicker').show();

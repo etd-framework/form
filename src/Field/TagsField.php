@@ -26,6 +26,19 @@ class TagsField extends ChosenListField {
 
     protected function getInput() {
 
+        // La valeur est un tableau
+        if (is_array($this->value) && count($this->value)) {
+
+            // On regarde si ce n'est pas des objets.
+            if (is_object($this->value[0])) {
+                $this->value = ArrayHelper::getColumn($this->value, 'id');
+            }
+
+        } elseif (is_string($this->value) && !empty($this->value)) { // Valeur au format 2,5,4
+            $this->value = explode(',', $this->value);
+        }
+
+        // On appel le parent pour ajouter les scripts Chosen avant celui en dessous.
         $input = parent::getInput();
 
         // Valeurs personnalisés ?
@@ -85,11 +98,6 @@ $('#" . $this->id . "_chosen input').keyup(function(event) {
             (new RequireJSUtility())
                 ->addDomReadyJS($js, false, "chosen");
 
-        }
-
-        // Valeur au format 2,5,4
-        if (is_string($this->value)) {
-            $this->value = explode(',', $this->value);
         }
 
         return $input;
