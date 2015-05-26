@@ -63,6 +63,10 @@ class MaskedTextField extends TextField {
             $options['autoUnmask'] = ($this->element['autoUnmask'] == "true");
         }
 
+        if (isset($this->element['removeMaskOnSubmit'])) {
+            $options['removeMaskOnSubmit'] = ($this->element['removeMaskOnSubmit'] == "true");
+        }
+
         if (isset($this->element['insertMode'])) {
             $options['insertMode'] = ($this->element['insertMode'] == "true");
         }

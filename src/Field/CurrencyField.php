@@ -26,10 +26,12 @@ class CurrencyField extends MaskedTextField {
         $localeconv = (new LocaleUtility())->localeconv();
 
         // On force quelques paramètres.
-        $this->element["alias"]          = "numeric";
-        $this->element["radixPoint"]     = $localeconv['mon_decimal_point'];
-        $this->element["groupSeparator"] = $localeconv['mon_thousands_sep'];
-        $this->element["digits"]         = $localeconv['frac_digits'];
+        $this->element["alias"]              = "numeric";
+        $this->element["radixPoint"]         = $localeconv['mon_decimal_point'];
+        $this->element["groupSeparator"]     = $localeconv['mon_thousands_sep'];
+        $this->element["digits"]             = $localeconv['frac_digits'];
+        $this->element["autoUnmask"]         = "true";
+        $this->element["removeMaskOnSubmit"] = "true";
 
         // On veut le vrai symbole Euro => €.
         $symbol = $localeconv['currency_symbol'];
