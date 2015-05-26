@@ -39,6 +39,7 @@ class DateField extends Field {
         $format  = $this->element['format'] ? (string) $this->element['format'] : 'L';
         $minDate = $this->element['minDate'] ? (string) $this->element['minDate'] : null;
         $maxDate = $this->element['maxDate'] ? (string) $this->element['maxDate'] : null;
+        $class   = $this->element['class'] ? ' ' . (string) $this->element['class'] . '"' : '';
 
         $options = array(
             'locale'  => $locale,
@@ -119,7 +120,7 @@ $('#" . $this->id . "_btn').on('click', function() {
 
         $html = array();
 
-        $html[] = '<div class="input-group date">';
+        $html[] = '<div class="input-group date' . $class . '">';
         $html[] = '<input type="text" id="' . $this->id . '_picker" class="form-control">';
         $html[] = '<span class="input-group-addon" id="' . $this->id . '_btn">';
         $html[] = '<span class="fa fa-calendar"></span>';

@@ -23,34 +23,104 @@ class MaskedTextField extends TextField {
 
     protected function getInput() {
 
-        $mask = $this->element['mask'];
-        $mask = $this->getText()->translate($mask);
+        $options = array();
 
-        if (!empty($mask)) {
-
-            $options = array();
-
-            $js = "$('#" . $this->id . "').mask('" . addslashes($mask) . "'";
-
-            if (!empty($this->element['placeholder'])) {
-                $options['placeholder'] = (string)$this->element['placeholder'];
-            }
-
-            if (!empty($this->element['autoclear'])) {
-                $options['autoclear'] = ($this->element['autoclear'] == "true");
-            } else {
-                $options['autoclear'] = false;
-            }
-
-            if(!empty($options)) {
-                $js .= "," . json_encode($options);
-            }
-
-            $js .= ");";
-
-            (new RequireJSUtility())
-                ->addDomReadyJS($js, false, "js/vendor/jquery.maskedinput.min");
+        if (!empty($this->element['mask'])) {
+            $mask = (string) $this->element['mask'];
+            $mask = $this->getText()->translate($mask);
+            $options['mask'] = $mask;
         }
+
+        if (!empty($this->element['alias'])) {
+            $options['alias'] = (string) $this->element['alias'];
+        }
+
+        if (!empty($this->element['placeholder'])) {
+            $options['placeholder'] = (string)$this->element['placeholder'];
+        }
+
+        if (!empty($this->element['repeat'])) {
+            $options['repeat'] = (int)$this->element['repeat'];
+        }
+
+        if (!empty($this->element['suffix'])) {
+            $options['suffix'] = (string)$this->element['suffix'];
+        }
+
+        if (!empty($this->element['digits'])) {
+            $options['digits'] = (int)$this->element['digits'];
+        }
+
+        if (isset($this->element['greedy'])) {
+            $options['greedy'] = ($this->element['greedy'] == "true");
+        }
+
+        if (isset($this->element['autoGroup'])) {
+            $options['autoGroup'] = ($this->element['autoGroup'] == "true");
+        }
+
+        if (isset($this->element['autoUnmask'])) {
+            $options['autoUnmask'] = ($this->element['autoUnmask'] == "true");
+        }
+
+        if (isset($this->element['insertMode'])) {
+            $options['insertMode'] = ($this->element['insertMode'] == "true");
+        }
+
+        if (isset($this->element['clearIncomplete'])) {
+            $options['clearIncomplete'] = ($this->element['clearIncomplete'] == "true");
+        }
+
+        if (isset($this->element['showMaskOnFocus'])) {
+            $options['showMaskOnFocus'] = ($this->element['showMaskOnFocus'] == "true");
+        }
+
+        if (isset($this->element['showMaskOnHover'])) {
+            $options['showMaskOnHover'] = ($this->element['showMaskOnHover'] == "true");
+        }
+
+        if (isset($this->element['numericInput'])) {
+            $options['numericInput'] = ($this->element['numericInput'] == "true");
+        }
+
+        if (isset($this->element['rightAlign'])) {
+            $options['rightAlign'] = ($this->element['rightAlign'] == "true");
+        }
+
+        if (isset($this->element['undoOnEscape'])) {
+            $options['undoOnEscape'] = ($this->element['undoOnEscape'] == "true");
+        }
+
+        if (isset($this->element['radixPoint'])) {
+            $options['radixPoint'] = (string) $this->element['radixPoint'];
+        }
+
+        if (isset($this->element['radixFocus'])) {
+            $options['radixFocus'] = ($this->element['radixFocus'] == "true");
+        }
+
+        if (isset($this->element['nojumps'])) {
+            $options['nojumps'] = ($this->element['nojumps'] == "true");
+        }
+
+        if (isset($this->element['digitsOptional'])) {
+            $options['digitsOptional'] = ($this->element['digitsOptional'] == "true");
+        }
+
+        if (isset($this->element['nojumpsThreshold'])) {
+            $options['nojumpsThreshold'] = (int) $this->element['nojumpsThreshold'];
+        }
+
+        if (isset($this->element['keepStatic'])) {
+            $options['keepStatic'] = ($this->element['keepStatic'] == "true");
+        }
+
+        if (isset($this->element['canClearPosition'])) {
+            $options['canClearPosition'] = ($this->element['canClearPosition'] == "true");
+        }
+
+        (new RequireJSUtility())
+            ->addDomReadyJS("$('#" . $this->id . "').inputmask(" . json_encode($options) . ");", false, "js/vendor/jquery.inputmask.bundle.min");
 
         return parent::getInput();
     }
