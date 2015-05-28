@@ -40,6 +40,7 @@ class DateField extends Field {
         $minDate = $this->element['minDate'] ? (string) $this->element['minDate'] : null;
         $maxDate = $this->element['maxDate'] ? (string) $this->element['maxDate'] : null;
         $class   = $this->element['class'] ? ' ' . (string) $this->element['class'] . '"' : '';
+        $dayOnly = $this->element['dayOnline'] ? ((string) $this->element['dayOnly'] == "true") : false;
 
         $options = array(
             'locale'  => $locale,
@@ -106,7 +107,14 @@ class DateField extends Field {
         }
 
         $js .= "$('#" . $this->id . "_picker').datetimepicker(" . json_encode($options) .").on('dp.change', function(e) {
-    $('#" . $this->id . "').val(e.date.utc().format('YYYY-MM-DD HH:mm:ss'))
+    if (e.date) $('#" . $this->id . "').val(e.date";
+
+        if (!$dayOnly) {
+            $js .= ".startOf('day')";
+        }
+
+    $js .= ".utc().format('YYYY-MM-DD HH:mm:ss'))
+    else $('#" . $this->id . "').val('');
 });
 $('#" . $this->id . "_btn').on('click', function() {
     $('#" . $this->id . "_picker').data('DateTimePicker').show();
