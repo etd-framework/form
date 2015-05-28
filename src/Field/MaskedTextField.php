@@ -124,7 +124,8 @@ class MaskedTextField extends TextField {
         }
 
         (new RequireJSUtility())
-            ->addDomReadyJS("$('#" . $this->id . "').inputmask(" . json_encode($options) . ");", false, "js/vendor/jquery.inputmask.bundle.min");
+            ->addRequireJSModule("inputmask", "js/vendor/jquery.inputmask.bundle.min", true, ["jquery"])
+            ->addDomReadyJS("$('#" . $this->id . "').inputmask(" . json_encode($options) . ");", false, "inputmask");
 
         return parent::getInput();
     }
