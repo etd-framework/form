@@ -17,12 +17,20 @@ class ChosenListField extends \Joomla\Form\Field\ListField {
 
     protected function getInput() {
 
+        $options = [
+            'placeholder_text' => $this->getText()->translate("APP_GLOBAL_SELECT_OPTION", ['jsSafe' => true]),
+            'no_results_text' => $this->getText()->translate("APP_GLOBAL_NO_RESULT", ['jsSafe' => true])
+        ];
+
+        $width = $this->element['width'] ? (string) $this->element['width'] : null;
+
+        if (isset($width)) {
+            $options['width'] = $width;
+        }
+
         (new RequireJSUtility())
             ->addRequireJSModule("chosen", "js/vendor/chosen.min", true, array("jquery"))
-            ->addDomReadyJS("$('.chosen-select').chosen({
-    placeholder_text: '" . $this->getText()->translate("APP_GLOBAL_SELECT_OPTION", ['jsSafe' => true]) . "',
-    no_results_text: '" . $this->getText()->translate("APP_GLOBAL_NO_RESULT", ['jsSafe' => true]) . "'
-});", false, "chosen, css!/css/vendor/chosen.min.css");
+            ->addDomReadyJS("$('.chosen-select').chosen(" . json_encode($options) . ");", false, "chosen, css!/css/vendor/chosen.min.css");
 
         if ($this->element['class']) {
             $this->element['class'] .= " chosen-select";
