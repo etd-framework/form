@@ -17,20 +17,18 @@
     "php": ">=5.4",
     "joomla/database": "~1.0",
     "joomla/form": "~2.0@dev",
-    "joomla/registry": "2.0.*@dev",
-    "etdsolutions/utility": "@dev",
-    "etdsolutions/requirejs": "~2.1",
-    "etdsolutions/requirecss": "@dev",
-    "etdsolutions/jquery": "~1.0",
-    "etdsolutions/domready": "@dev"
+    "joomla/registry": "2.0.*@dev"
   },
   "suggest": {
+    "etdsolutions/utility": "Pour utiliser RequireJS",
+    "etdsolutions/jquery": "Pour utiliser les champs avec JS",
+    "etdsolutions/requirejs": "Pour utiliser les champs avec JS",
+    "etdsolutions/requirecss": "Pour utiliser le champ ChosenList",
+    "etdsolutions/domready": "Pour utiliser les champs avec JS",
     "etdsolutions/chosen": "Pour utiliser le champ ChosenList",
     "etdsolutions/jquery.maskedinput": "Pour utiliser le champ MaskedText",
     "kartik-v/bootstrap-fileinput": "Pour utiliser le champ File",
-    "etdsolutions/bootstrap-datetimepicker": "Pour utiliser le champ Date",
-    "etdsolutions/bootstrap-tags-input": "Pour utiliser le champ Tags",
-    "twitter/typeahead.js": "Pour utiliser le champ Tags"
+    "etdsolutions/bootstrap-datetimepicker": "Pour utiliser le champ Date"
   },
   "autoload": {
     "psr-4": {
