@@ -22,10 +22,15 @@ class ChosenListField extends \Joomla\Form\Field\ListField {
             'no_results_text' => $this->getText()->translate("APP_GLOBAL_NO_RESULT", ['jsSafe' => true])
         ];
 
-        $width = $this->element['width'] ? (string) $this->element['width'] : null;
+        $width                = $this->element['width'] ? (string) $this->element['width'] : null;
+        $max_selected_options = $this->element['maxSelectedOptions'] ? (int) $this->element['maxSelectedOptions'] : null;
 
         if (isset($width)) {
             $options['width'] = $width;
+        }
+
+        if ($max_selected_options > 0) {
+            $options['max_selected_options'] = $max_selected_options;
         }
 
         (new RequireJSUtility())
