@@ -67,7 +67,9 @@ class DateField extends Field {
                 if ($field !== false) {
 
                     $js .= "$('#" . $field->id . "_picker').on('dp.change', function(e) {
-    $('#" . $this->id . "_picker').data('DateTimePicker').minDate(e.date);
+    if (e.oldDate) {
+        $('#" . $this->id . "_picker').data('DateTimePicker').minDate(e.date);
+    }
 });\n";
 
                 }
@@ -86,7 +88,9 @@ class DateField extends Field {
                 if ($field !== false) {
 
                     $js .= "$('#" . $field->id . "_picker').on('dp.change', function(e) {
-    $('#" . $this->id . "_picker').data('DateTimePicker').maxDate(e.date);
+    if (e.oldDate) {
+        $('#" . $this->id . "_picker').data('DateTimePicker').maxDate(e.date);
+    }
 });\n";
 
                 }
