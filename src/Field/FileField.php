@@ -35,7 +35,7 @@ class FileField extends Field {
         // JS
         $js = "$('#" . $this->id . "').fileinput(" . json_encode($options) . ")";
 
-        if (isset($this->element['upload_uri'])) {
+        if (isset($this->element['uploadUrl'])) {
             $js .= ".on('fileuploaded', function(event, data, previewId, index) {
     \$('input[name=\"" . $this->name . "\"]').val(data.response.name);
 })";
