@@ -33,7 +33,9 @@ class FileField extends Field {
         $options = $this->getOptions();
 
         // JS
-        $js = "$('#" . $this->id . "').fileinput(" . json_encode($options) . ")";
+        $js = "$('#" . $this->id . "').fileinput(" . json_encode($options) . ").on('filecleared', function() {
+    \$('input[name=\"" . $this->name . "\"]').val('###DELETED###');
+})";
 
         if (isset($this->element['uploadUrl'])) {
             $js .= ".on('fileuploaded', function(event, data, previewId, index) {
