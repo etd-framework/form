@@ -17,13 +17,16 @@ class ChosenListField extends \Joomla\Form\Field\ListField {
 
     protected function getInput() {
 
+        $options = [];
+
+
         $options = [
-            'placeholder_text' => $this->getText()->translate("APP_GLOBAL_SELECT_OPTION", ['jsSafe' => true]),
             'no_results_text' => $this->getText()->translate("APP_GLOBAL_NO_RESULT", ['jsSafe' => true])
         ];
 
-        $width                = $this->element['width'] ? (string) $this->element['width'] : null;
-        $max_selected_options = $this->element['maxSelectedOptions'] ? (int) $this->element['maxSelectedOptions'] : null;
+        $width                 = $this->element['width'] ? (string) $this->element['width'] : null;
+        $max_selected_options  = $this->element['maxSelectedOptions'] ? (int) $this->element['maxSelectedOptions'] : null;
+        $placeholder           = $this->element["placeholder"] ? (string) $this->element["placeholder"] : "APP_GLOBAL_SELECT_OPTION";
 
         if (isset($width)) {
             $options['width'] = $width;
@@ -32,6 +35,17 @@ class ChosenListField extends \Joomla\Form\Field\ListField {
         if ($max_selected_options > 0) {
             $options['max_selected_options'] = $max_selected_options;
         }
+
+        if ($this->multiple) {
+            $options["placeholder_text_multiple"] = $this->getText()->translate($placeholder, ['jsSafe' => true]);
+        } else {
+            $options["placeholder_text_single"] = $this->getText()->translate($placeholder, ['jsSafe' => true]);
+        }
+
+        if ($this->element["allow_single_deselect"]) {
+            $options['allow_single_deselect'] = (string) $this->element["allow_single_deselect"] == "true";
+        }
+
 
         (new RequireJSUtility())
             ->addRequireJSModule("chosen", "js/vendor/chosen.min", true, array("jquery"))
