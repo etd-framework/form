@@ -17,9 +17,6 @@ class ChosenListField extends \Joomla\Form\Field\ListField {
 
     protected function getInput() {
 
-        $options = [];
-
-
         $options = [
             'no_results_text' => $this->getText()->translate("APP_GLOBAL_NO_RESULT", ['jsSafe' => true])
         ];
