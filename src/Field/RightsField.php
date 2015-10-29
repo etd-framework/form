@@ -37,16 +37,13 @@ class RightsField extends Field {
 
         // JS
         (new RequireJSUtility())
-            ->addDomReadyJS("$('[data-toggle=\"tooltip\"], .hasTooltip').tooltip({container:'body',html:true});", false, "bootstrap")
-            ->addRequireJSModule("chosen", "js/vendor/chosen.min", true, array("jquery"))
-            ->addDomReadyJS("$('.chosen-select').chosen();", false, "chosen, css!/css/vendor/chosen.min.css");
+            ->addDomReadyJS("$('[data-toggle=\"tooltip\"], .hasTooltip').tooltip({container:'body',html:true});", false, "bootstrap");
 
         if (!empty($this->value)) {
             $value = new Registry($this->value);
         }
 
         $class = $this->element['class'] ? ' ' . (string)$this->element['class'] : '';
-        $readonly = isset($this->element['readonly']) ? (bool)$this->element['readonly'] : false;
 
         // On récupère l'instance de gestion ACL.
         $acl = Acl::getInstance($this->form->getDb());
@@ -87,7 +84,7 @@ class RightsField extends Field {
             $html[] = '<th>' . $text->translate('APP_GLOBAL_RIGHTS_HEADING_RIGHT') . '</th>';
 
             if ($group->parent_id) {
-                $html[] = '<th id="aclactionth' . $group->value . '">';
+                $html[] = '<th id="aclactionth' . $group->id . '">';
                 $html[] = '<span class="acl-action">' . $text->translate('APP_GLOBAL_RIGHTS_HEADING_CALCULATED_SETTING') . '</span>';
                 $html[] = '</th>';
             }
@@ -113,7 +110,7 @@ class RightsField extends Field {
                     $html[] = '<td class="action"><span class="hasTooltip" title="' . $text->translate($action->description) . '">' . $text->translate($action->title) . '</td>';
                     $html[] = '<td class="right">';
 
-                    $html[] = '<select class="chosen-select input-sm"'
+                    $html[] = '<select class="form-control input-sm"'
                         . ' name="' . $this->name . '[' . $section->name . '][' . $action->name . '][' . $group->id . ']"'
                         . ' id="' . $this->id . '_' . $section->name . '_' . $action->name	. '_' . $group->id . '"'
                         . ' title="' . $text->sprintf('APP_GLOBAL_RIGHTS_SELECT_ALLOW_DENY_GROUP', $text->translate($action->title), trim($group->title)) . '">';
