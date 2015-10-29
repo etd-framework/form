@@ -30,6 +30,8 @@ class BooleanField extends Field {
     protected function getInput() {
 
         $class       = $this->element['class'] ? ' ' . (string)$this->element['class'] : '';
+        $trueLabel   = $this->element['trueLabel'] ? (string)$this->element['trueLabel'] : 'APP_GLOBAL_YES';
+        $falseLabel   = $this->element['falseLabel'] ? (string)$this->element['falseLabel'] : 'APP_GLOBAL_NO';
         $buttonClass = $this->element['buttonClass'] ? ' ' . (string)$this->element['buttonClass'] : '';
         $readonly = isset($this->element['readonly']) ? (bool)$this->element['readonly'] : false;
 
@@ -55,19 +57,19 @@ class BooleanField extends Field {
             $html .= '<input type="hidden" name="' . $this->name . '" value="' . $this->value . '">';
 
             if (empty($checked0)) {
-                $html .= $this->getText()->translate('APP_GLOBAL_YES');
+                $html .= $this->getText()->translate($trueLabel);
             } else {
-                $html .= $this->getText()->translate('APP_GLOBAL_NO');
+                $html .= $this->getText()->translate($falseLabel);
             }
 
         } else {
 
             $html .= '<div class="btn-group' . $class . '" data-toggle="buttons">
   <label class="btn' . $buttonClass . $active1 . '">
-    <input type="radio" name="' . $this->name . '" id="' . $this->id . '1"' . $checked1 . ' value="1"> ' . $this->getText()->translate("APP_GLOBAL_YES") . '
+    <input type="radio" name="' . $this->name . '" id="' . $this->id . '1"' . $checked1 . ' value="1"> ' . $this->getText()->translate($trueLabel) . '
   </label>
   <label class="btn' . $buttonClass . $active0 . '">
-    <input type="radio" name="' . $this->name . '" id="' . $this->id . '0"' . $checked0 . ' value="0"> ' . $this->getText()->translate("APP_GLOBAL_NO") . '
+    <input type="radio" name="' . $this->name . '" id="' . $this->id . '0"' . $checked0 . ' value="0"> ' . $this->getText()->translate($falseLabel) . '
   </label>
 </div>';
 
