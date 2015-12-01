@@ -10,9 +10,9 @@
 namespace EtdSolutions\Form\Field;
 
 use EtdSolutions\Utility\RequireJSUtility;
-use Joomla\Form\Field\TextField;
+use Joomla\Form\Field;
 
-class MaskedTextField extends TextField {
+class MaskedTextField extends Field {
 
     /**
      * The form field type.
@@ -61,6 +61,10 @@ class MaskedTextField extends TextField {
 
         if (isset($this->element['autoUnmask'])) {
             $options['autoUnmask'] = ($this->element['autoUnmask'] == "true");
+        }
+
+        if (isset($this->element['unmaskAsNumber'])) {
+            $options['unmaskAsNumber'] = ($this->element['unmaskAsNumber'] == "true");
         }
 
         if (isset($this->element['removeMaskOnSubmit'])) {
@@ -129,7 +133,33 @@ class MaskedTextField extends TextField {
             ->addRequireJSModule("dependencyLib", "js/vendor/inputmask/inputmask.dependencyLib.jquery.min")
             ->addDomReadyJS("$('#" . $this->id . "').inputmask(" . json_encode($options) . ");", false, "jquery.inputmask, js/vendor/inputmask/inputmask.numeric.extensions.min");
 
-        return parent::getInput();
+        // Initialize some field attributes.
+        $size = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
+        $maxLength = $this->element['maxlength'] ? ' maxlength="' . (int) $this->element['maxlength'] . '"' : '';
+        $class = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
+        $readonly = ((string) $this->element['readonly'] == 'true') ? ' readonly="readonly"' : '';
+        $disabled = ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
+
+        // Temporary workaround to make sure the placeholder can be set without coupling to joomla/language
+        $placeholder = '';
+
+        if ($this->element['placeholder'])
+        {
+            try
+            {
+                $placeholder = ' placeholder="' . $this->getText()->translate((string) $this->element['placeholder']) . '"';
+            }
+            catch (\RuntimeException $e)
+            {
+                $placeholder = ' placeholder="' . (string) $this->element['placeholder'] . '"';
+            }
+        }
+
+        // Initialize JavaScript field attributes.
+        $onchange = $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
+
+        return '<input type="text" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'
+        . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '"' . $class . $size . $disabled . $readonly . $onchange . $maxLength . $placeholder . '/>';
     }
 
 }

@@ -32,6 +32,7 @@ class CurrencyField extends MaskedTextField {
         $this->element["digits"]             = $localeconv['frac_digits'];
         $this->element["autoUnmask"]         = "true";
         $this->element["removeMaskOnSubmit"] = "true";
+        $this->element["unmaskAsNumber"]     = "true";
 
         // On veut le vrai symbole Euro => €.
         $symbol = $localeconv['currency_symbol'];
