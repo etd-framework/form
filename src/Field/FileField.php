@@ -60,7 +60,7 @@ class FileField extends Field {
         $onchange = $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
 
         return '<input type="file" name="' . $this->fieldname . '_upload" id="' . $this->id . '"' . ' value=""' . $accept . $disabled . $class . $size
-        . $onchange . '><input type="hidden" name="' . $this->name . '" value="' . $this->value . '">';
+        . $onchange . '><input type="hidden" name="' . $this->name . '" data-fileinput="' . $this->id . '" value="' . $this->value . '">';
 
     }
 
