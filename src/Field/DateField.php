@@ -115,9 +115,11 @@ class DateField extends Field {
 
         if ($dayOnly) {
             $js .= ".startOf('day')";
+        } else {
+            $js .= ".utc()";
         }
 
-    $js .= ".utc().format('YYYY-MM-DD HH:mm:ss'))
+    $js .= ".format('YYYY-MM-DD HH:mm:ss'))
     else $('#" . $this->id . "').val('');
 });
 $('#" . $this->id . "_btn').on('click', function() {
