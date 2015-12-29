@@ -50,7 +50,7 @@ class BooleanField extends Field {
 
         }
 
-        $html = '<div class="form-control-static">';
+        $html = "";
 
         if ($readonly) {
 
@@ -74,8 +74,6 @@ class BooleanField extends Field {
 </div>';
 
         }
-
-        $html .= '</div>';
 
         return $html;
 
