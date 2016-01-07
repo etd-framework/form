@@ -103,7 +103,7 @@ class DateField extends Field {
         }
 
         // Si on a une valeur.
-        if (!empty($this->value) && $this->value != $this->form->getDb()->getNullDate()) {
+        if (!empty($this->value) && $this->value != $this->form->getDb()->getNullDate() && $this->value != '0000-00-00') {
 
             // La date venant du système est en UTC.
             // On la formate avec le fuseau horaire de l'utilisateur.
