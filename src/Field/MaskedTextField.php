@@ -35,8 +35,8 @@ class MaskedTextField extends Field {
             $options['alias'] = (string) $this->element['alias'];
         }
 
-        if (!empty($this->element['placeholder'])) {
-            $options['placeholder'] = (string)$this->element['placeholder'];
+        if (!empty($this->element['maskPlaceholder'])) {
+            $options['placeholder'] = (string)$this->element['maskPlaceholder'];
         }
 
         if (!empty($this->element['repeat'])) {
