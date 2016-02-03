@@ -31,6 +31,9 @@ class RightsField extends Field {
      */
     protected function getInput() {
 
+        @set_time_limit(120);
+        @ini_set('max_execution_time', 120);
+
         // Initialisation.
         $html = array();
         $text = $this->getText();
