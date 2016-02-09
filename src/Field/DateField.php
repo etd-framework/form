@@ -60,6 +60,11 @@ class DateField extends Field {
             )
         );
 
+
+        if (isset($this->element['sideBySide'])) {
+            $options["sideBySide"] = ((string) $this->element['sideBySide'] == "true");
+        }
+
         if (isset($minDate)) {
             if (strpos($minDate, 'field:') !== false) {
 
