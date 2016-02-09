@@ -119,6 +119,7 @@ class MarkedEditorField extends TextareaField {
 
         $options = json_encode($options);
         $options = str_replace(['"##STARTFUNC##', '##ENDFUNC##"'], "", $options);
+        $options = str_replace("\\\\", "\\", $options);
 
         (new RequireJSUtility())
             ->addRequirePackage("codemirror", "js/vendor/codemirror", "lib/codemirror")
