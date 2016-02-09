@@ -20,7 +20,7 @@ class MarkedEditorField extends TextareaField {
             "autoDownloadFontAwesome" => false,
             "spellChecker"            => false,
             "autofocus"               => false,
-            "element"                 => "##STARTELEMENT##".$this->id."##ENDELEMENT##"
+            "element"                 => "##STARTFUNC##document.getElementById('".$this->id."')##ENDFUNC##"
         ];
 
         if (isset($this->element['autoDownloadFontAwesome'])) {
@@ -82,14 +82,49 @@ class MarkedEditorField extends TextareaField {
             $options['toolbarTips'] = ((string) $this->element['toolbarTips'] == 'true');
         }
 
+        // Options supplémentaires depuis le XML.
+        foreach ($this->element->children() as $node) {
+
+            switch ($node->getName()) {
+
+                case 'toolbar': // Boutons persos pour la barre d'outils.
+                    $options['toolbar'] = [];
+                    foreach ($node->children() as $child) {
+                        switch ($child->getName()) {
+
+                            case 'separator':
+                                $options['toolbar'][] = "|";
+                            break;
+
+                            case 'custom':
+                                $options['toolbar'][] = [
+                                    "name"      => (string) $child['name'],
+                                    "action"    => "##STARTFUNC##" . (string) $child['action'] . "##ENDFUNC##",
+                                    "className" => (string) $child['className'],
+                                    "title"     => (string) $child['title']
+                                ];
+                            break;
+
+                            case 'button':
+                            default:
+                                $options['toolbar'][] = (string) $child['name'];
+                            break;
+                        }
+                    }
+                break;
+
+            }
+
+        }
+
         $options = json_encode($options);
-        $options = str_replace(['"##STARTELEMENT##', '##ENDELEMENT##"'], ["document.getElementById('", "')"], $options);
+        $options = str_replace(['"##STARTFUNC##', '##ENDFUNC##"'], "", $options);
 
         (new RequireJSUtility())
             ->addRequirePackage("codemirror", "js/vendor/codemirror", "lib/codemirror")
             ->addRequireJSModule("marked", "js/vendor/marked.min")
             ->addRequireJSModule("simplemde", "js/vendor/simplemde.min", false, ["codemirror/codemirror", "marked"])
-            ->addDomReadyJS("new simplemde(" . $options . ");", false, "simplemde, css!/css/vendor/simplemde.min.css, css!/js/vendor/codemirror/lib/codemirror.css");
+            ->addDomReadyJS("$('#" . $this->id . "').data('simplemde', new simplemde(" . $options . "));", true, "simplemde, css!/css/vendor/simplemde.min.css, css!/js/vendor/codemirror/lib/codemirror.css");
 
         return parent::getInput();
 
