@@ -11,6 +11,8 @@ namespace EtdSolutions\Form;
 
 use Joomla\Application\AbstractApplication;
 use Joomla\Database\DatabaseDriver;
+use Joomla\DI\ContainerAwareInterface;
+use Joomla\DI\ContainerAwareTrait;
 use Joomla\Form\Form as JoomlaForm;
 use Joomla\Form\FormHelper;
 use Joomla\Registry\Registry;
@@ -18,7 +20,9 @@ use Joomla\Registry\Registry;
 /**
  * Extension du formulaire pour ajouter quelques fonctionnalités.
  */
-class Form extends JoomlaForm {
+class Form extends JoomlaForm implements ContainerAwareInterface {
+
+    use ContainerAwareTrait;
 
     /**
      * @var DatabaseDriver $db

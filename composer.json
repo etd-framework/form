@@ -17,7 +17,8 @@
     "php": ">=5.4",
     "joomla/database": "~1.0",
     "joomla/form": "~2.0@dev",
-    "joomla/registry": "2.0.*@dev"
+    "joomla/registry": "2.0.*@dev",
+    "joomla/di": "2.0.*@dev"
   },
   "suggest": {
     "etdsolutions/utility": "Pour utiliser RequireJS",
