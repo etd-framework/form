@@ -117,6 +117,10 @@ class MarkedEditorField extends TextareaField {
 
         }
 
+        if (!empty($this->value)) {
+            $options["initialValue"] = $this->value;
+        }
+
         $options = json_encode($options);
         $options = str_replace(['"##STARTFUNC##', '##ENDFUNC##"'], "", $options);
         $options = str_replace("\\\\", "\\", $options);
@@ -125,7 +129,7 @@ class MarkedEditorField extends TextareaField {
             ->addRequirePackage("codemirror", "js/vendor/codemirror", "lib/codemirror")
             ->addRequireJSModule("marked", "js/vendor/marked.min")
             ->addRequireJSModule("simplemde", "js/vendor/simplemde.min", false, ["codemirror/codemirror", "marked"])
-            ->addDomReadyJS("$('#" . $this->id . "').data('simplemde', new simplemde(" . $options . "));", true, "simplemde, css!/css/vendor/simplemde.min.css, css!/js/vendor/codemirror/lib/codemirror.css");
+            ->addDomReadyJS("$('#" . $this->id . "').data('simplemde', new simplemde(" . $options . ")).data('simplemde').codemirror.on('change',function(){\$('#" . $this->id . "').val(\$('#" . $this->id . "').data('simplemde').value())});", true, "simplemde, css!/css/vendor/simplemde.min.css, css!/js/vendor/codemirror/lib/codemirror.css");
 
         return parent::getInput();
 
