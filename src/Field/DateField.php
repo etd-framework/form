@@ -39,6 +39,7 @@ class DateField extends Field {
         $format   = $this->element['format'] ? (string) $this->element['format'] : 'L';
         $minDate  = $this->element['minDate'] ? (string) $this->element['minDate'] : null;
         $maxDate  = $this->element['maxDate'] ? (string) $this->element['maxDate'] : null;
+        $placeholder  = $this->element['placeholder'] ? ' placeholder="' . htmlspecialchars((string) $this->element['placeholder']) . '"' : null;
         $class    = $this->element['class'] ? ' ' . (string) $this->element['class'] . '"' : '';
         $dayOnly  = $this->element['dayOnly'] ? ((string) $this->element['dayOnly'] == "true") : false;
         $readonly = ((string) $this->element['readonly'] == 'true') ? ' readonly="readonly"' : '';
@@ -60,6 +61,9 @@ class DateField extends Field {
             )
         );
 
+        if (isset($this->element['default'])) {
+            $options["defaultDate"] = (string) $this->element['default'];
+        }
 
         if (isset($this->element['sideBySide'])) {
             $options["sideBySide"] = ((string) $this->element['sideBySide'] == "true");
@@ -142,7 +146,7 @@ $('#" . $this->id . "_btn').on('click', function() {
         $html = array();
 
         $html[] = '<div class="input-group date' . $class . '">';
-        $html[] = '<input type="text" id="' . $this->id . '_picker" class="form-control"' . $readonly . $disabled . '>';
+        $html[] = '<input type="text" id="' . $this->id . '_picker" class="form-control"' . $readonly . $placeholder . $disabled . '>';
         $html[] = '<span class="input-group-addon" id="' . $this->id . '_btn">';
         $html[] = '<span class="fa fa-calendar"></span>';
         $html[] = '</span>';
