@@ -105,7 +105,7 @@ class Form extends JoomlaForm implements ContainerAwareInterface {
 
     }
 
-    protected function validateField(\SimpleXMLElement $element, $group = null, $value = null, Registry $input = null)
+    public function validateField(\SimpleXMLElement $element, $group = null, $value = null, Registry $input = null)
     {
         $valid = true;
 
