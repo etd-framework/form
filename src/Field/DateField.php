@@ -139,8 +139,7 @@ $('#" . $this->id . "_btn').on('click', function() {
 
         (new RequireJSUtility())
             ->addRequireJSModule("moment", "js/vendor/moment.min", true, array("jquery"))
-            ->addRequireJSModule("momentfr", "js/vendor/moment.fr", true, array("moment"))
-            ->addRequireJSModule("bsdatetimepicker", "js/vendor/bootstrap-datetimepicker.min", true, array("jquery", "bootstrap", "momentfr"))
+            ->addRequireJSModule("bsdatetimepicker", "js/vendor/bootstrap-datetimepicker.min", true, array("jquery", "bootstrap", "moment"))
             ->addDomReadyJS($js, false, "bsdatetimepicker, css!/css/vendor/bootstrap-datetimepicker.min.css");
 
         $html = array();
