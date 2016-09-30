@@ -41,9 +41,11 @@ class StrongPasswordRule extends Rule {
         }
 
         // Ne doit pas être identique au précédent.
+	    $container  = $form->getContainer();
         $simpleAuth = new Simple();
-        $user       = $form->getContainer()->get('user')->load();
-        if ($simpleAuth->verify($value, $user->password)) {
+        $user       = $container->get('user')->load();
+	    $password   = $container->get('db')->setQuery("SELECT password FROM #__users WHERE id = " . $user->id)->loadResult();
+        if ($simpleAuth->verify($value, $password)) {
             return false;
         }
 
