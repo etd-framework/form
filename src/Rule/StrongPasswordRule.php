@@ -10,7 +10,6 @@
 namespace EtdSolutions\Form\Rule;
 
 use EtdSolutions\Form\Form;
-use Joomla\Crypt\Password\Simple;
 use Joomla\Form\Rule;
 use Joomla\Registry\Registry;
 
@@ -42,10 +41,9 @@ class StrongPasswordRule extends Rule {
 
         // Ne doit pas être identique au précédent.
 	    $container  = $form->getContainer();
-        $simpleAuth = new Simple();
         $user       = $container->get('user')->load();
 	    $password   = $container->get('db')->setQuery("SELECT password FROM #__users WHERE id = " . $user->id)->loadResult();
-        if ($simpleAuth->verify($value, $password)) {
+        if (!password_verify($value, $password)) {
             return false;
         }
 
