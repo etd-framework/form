@@ -13,6 +13,7 @@ use EtdSolutions\Acl\Acl;
 use EtdSolutions\Utility\RequireJSUtility;
 use Joomla\Form\Field;
 use Joomla\Registry\Registry;
+use SimpleAcl\Role\RoleAggregate;
 use SimpleXMLElement;
 
 class RightsField extends Field {
@@ -49,13 +50,17 @@ class RightsField extends Field {
         $class = $this->element['class'] ? ' ' . (string)$this->element['class'] : '';
 
         // On récupère l'instance de gestion ACL.
-        $acl = Acl::getInstance($this->form->getDb());
+        $acl    = Acl::getInstance($this->form->getDb());
+	    $simple = $acl->getSimpleAcl();
 
         // On récupère les sections et les actions.
         $actions = $this->getActions();
 
         // On charge les groupes utilisateurs.
         $groups = $this->getUserGroups();
+
+	    // On charge les rôles.
+	    $roles = $acl->getRoles();
 
         // Building tab nav
         $html[] = '<div role="tabpanel" class="nav-tabs-left">';
@@ -124,10 +129,11 @@ class RightsField extends Field {
                     // On récupère les droits pour l'action NON HÉRITÉS pour le groupe.
                     $assetRule = null;
 
-                    $simple = $acl->getSimpleAcl();
-                    $res = $simple->isAllowedReturnResult($group->id, $section->name, $action->name)->collection;
+	                $groups = new RoleAggregate();
+	                $groups->addRole($roles[$group->id]);
+                    $res = $simple->isAllowedReturnResult($groups, $section->name, $action->name)->collection;
 
-                    if ($res->count()) {
+                    if ($res->count() > 0) {
                         $res->top();
                         while($res->valid()) {
                             $priority = $res->current()->getPriority();
@@ -220,7 +226,7 @@ class RightsField extends Field {
 
         $html[] = '</div>';
         $html[] = '</div>';
-
+die;
         return implode($html);
 
     }
