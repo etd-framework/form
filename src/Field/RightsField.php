@@ -226,7 +226,7 @@ class RightsField extends Field {
 
         $html[] = '</div>';
         $html[] = '</div>';
-die;
+
         return implode($html);
 
     }
