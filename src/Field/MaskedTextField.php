@@ -128,10 +128,8 @@ class MaskedTextField extends Field {
         }
 
         (new RequireJSUtility())
-            ->addRequireJSModule("jquery.inputmask", "js/vendor/inputmask/jquery.inputmask.min", true, ["jquery"])
-            ->addRequireJSModule("inputmask", "js/vendor/inputmask/inputmask.min")
-            ->addRequireJSModule("inputmask.dependencyLib", "js/vendor/inputmask/inputmask.dependencyLib.jquery.min")
-            ->addDomReadyJS("$('#" . $this->id . "').inputmask(" . json_encode($options) . ");", false, "jquery.inputmask, js/vendor/inputmask/inputmask.numeric.extensions.min");
+            ->addRequireJSModule("inputmask", "js/vendor/jquery.inputmask.bundle.min", true, ["jquery"])
+            ->addDomReadyJS("$('#" . $this->id . "').inputmask(" . json_encode($options) . ");", false, "inputmask");
 
         // Initialize some field attributes.
         $size = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
