@@ -24,7 +24,8 @@ class InlineRadioField extends \Joomla\Form\Field\RadioField {
         $html = array();
 
         // Initialize some field attributes.
-        $class = $this->element['class'] ? ' class="radio-group ' . (string) $this->element['class'] . '"' : ' class="radio-group"';
+        $class           = $this->element['class'] ? ' class="radio-group ' . (string) $this->element['class'] . '"' : ' class="radio-group"';
+        $radiolabelclass = $this->element['radiolabelclass'] ? (string) $this->element['radiolabelclass'] : 'radio-inline';
 
         // Start the radio field output.
         $html[] = '<span id="' . $this->id . '"' . $class . '>';
@@ -42,7 +43,7 @@ class InlineRadioField extends \Joomla\Form\Field\RadioField {
             // Initialize some JavaScript option attributes.
             $onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
 
-            $html[] = '<label class="radio-inline" for="' . $this->id . $i . '">';
+            $html[] = '<label class="' . $radiolabelclass . '" for="' . $this->id . $i . '">';
 
             $html[] = '<input type="radio" id="' . $this->id . $i . '" name="' . $this->name . '"' . ' value="'
                 . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $class . $onclick . $disabled . '>';
