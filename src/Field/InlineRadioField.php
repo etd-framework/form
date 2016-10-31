@@ -54,7 +54,7 @@ class InlineRadioField extends \Joomla\Form\Field\RadioField {
                 . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $class . $onclick . $disabled . '>';
 
             if ($custom) {
-                $html[] = '<label for="' . $this->id . $i . '"></label>';
+                $html[] = '<label for="' . $this->id . $i . '"'.$class.'></label>';
             }
 
             $html[] = ' ' . $option->text;

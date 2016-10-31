@@ -47,7 +47,7 @@ class FileField extends Field {
 
         // On ajoute les ressources.
         $this->requirejs
-            ->addRequireJSModule("fileinput", "js/vendor/fileinput.min", true, array("bootstrap", "jquery"))
+            ->addRequireJSModule("fileinput", "js/vendor/fileinput.min", true, array("jquery"))
             ->addDomReadyJS($js, false, "fileinput". $this->modules  .", css!/css/vendor/fileinput.min.css");
 
         // Initialize some field attributes.
@@ -230,6 +230,8 @@ class FileField extends Field {
                 );
             }
 
+        } else {
+            $options['uploadAsync'] = false;
         }
 
         // minImageWidth
