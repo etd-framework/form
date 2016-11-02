@@ -20,7 +20,6 @@ class ChoicesField extends \Joomla\Form\Field\ListField {
         $text = $this->getText();
 
         $options = [
-            'addItems'       => false,
             'removeItems'    => false,
             'shouldSort'     => false,
             'noResultsText'  => $text->translate("APP_GLOBAL_NO_RESULT", ['jsSafe' => true]),
@@ -35,6 +34,7 @@ class ChoicesField extends \Joomla\Form\Field\ListField {
 
         if ($this->element['addItems']) {
             $options['addItems'] = ((string) $this->element['addItems'] == 'true');
+            $this->element['disable'] = ((string) $this->element['addItems'] == 'true') ? "true" : "false";
         }
 
         if ($this->element['removeItems']) {
