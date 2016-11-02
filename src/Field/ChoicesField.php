@@ -113,9 +113,14 @@ class ChoicesField extends \Joomla\Form\Field\ListField {
             $options['itemSelectText'] = $text->translate((string) $this->element['itemSelectText'], ['jsSafe' => true]);
         }
 
+        $modules = "choices";
+        if ($this->element['includeCSS'] && ((string) $this->element['includeCSS'] == 'true')) {
+            $modules .= ", css!/css/vendor/choices.min.css";
+        }
+
         (new RequireJSUtility())
             ->addRequireJSModule("choices", "js/vendor/choices")
-            ->addDomReadyJS("new choices(document.getElementById('". $this->id . "'), " . json_encode($options) . ");", false, "choices, css!/css/vendor/choices.min.css");
+            ->addDomReadyJS("new choices(document.getElementById('". $this->id . "'), " . json_encode($options) . ");", false, $modules);
 
         return parent::getInput();
     }
