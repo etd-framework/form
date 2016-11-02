@@ -9,6 +9,8 @@
 
 namespace EtdSolutions\Form;
 
+use EtdSolutions\Form\Exception\InvalidFieldException;
+
 use Joomla\Application\AbstractApplication;
 use Joomla\Database\DatabaseDriver;
 use Joomla\DI\ContainerAwareInterface;
@@ -138,7 +140,7 @@ class Form extends JoomlaForm implements ContainerAwareInterface {
                     $message = sprintf('Field required: %s', $message);
                 }
 
-                return new \RuntimeException($message);
+                return new InvalidFieldException($message, null, null, (string) $element['name'], (string) $group);
             }
         }
 
@@ -151,7 +153,7 @@ class Form extends JoomlaForm implements ContainerAwareInterface {
             // If the object could not be loaded return an error message.
             if ($rule === false)
             {
-                throw new \UnexpectedValueException(sprintf('%s::validateField() rule `%s` missing.', get_class($this), $type));
+                throw new InvalidFieldException(sprintf('%s::validateField() rule `%s` missing.', get_class($this), $type), null, null, (string) $element['name'], (string) $group);
             }
 
             // Instantiate the Rule object
@@ -179,7 +181,7 @@ class Form extends JoomlaForm implements ContainerAwareInterface {
             {
                 $message = $translate ? $this->getText()->translate($element['message']) : $element['message'];
 
-                return new \UnexpectedValueException($message);
+                return new InvalidFieldException($message, null, null, (string) $element['name'], (string) $group);
             }
             else
             {
@@ -195,7 +197,7 @@ class Form extends JoomlaForm implements ContainerAwareInterface {
                     $message = sprintf('JLIB_FORM_VALIDATE_FIELD_INVALID', $message);
                 }
 
-                return new \UnexpectedValueException($message);
+                return new InvalidFieldException($message, null, null, (string) $element['name'], (string) $group);
             }
         }
 
