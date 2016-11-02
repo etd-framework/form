@@ -120,7 +120,7 @@ class ChoicesField extends \Joomla\Form\Field\ListField {
 
         (new RequireJSUtility())
             ->addRequireJSModule("choices", "js/vendor/choices.min")
-            ->addDomReadyJS("new choices(document.getElementById('". $this->id . "'), " . json_encode($options) . ");", false, $modules);
+            ->addDomReadyJS("new choices(document.getElementById('". $this->id . "'), " . json_encode($options) . ");", false, $modules, false);
 
         return parent::getInput();
     }
