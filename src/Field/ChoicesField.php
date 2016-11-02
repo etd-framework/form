@@ -114,7 +114,7 @@ class ChoicesField extends \Joomla\Form\Field\ListField {
         }
 
         $modules = "choices";
-        if ($this->element['includeCSS'] && ((string) $this->element['includeCSS'] == 'true')) {
+        if (($this->element['includeCSS'] && ((string) $this->element['includeCSS'] != 'false')) || !$this->element['includeCSS']) {
             $modules .= ", css!/css/vendor/choices.min.css";
         }
 
