@@ -68,7 +68,7 @@ class WeekField extends Field {
             ->addDomReadyJS(implode("\n", $js), false, "moment, weekpicker, css!/css/vendor/week-picker.min.css", false);
 
 	    return '<div class="input-group week-picker">'
-                . '<input type="text" id="' . $this->id . '"' . $placeholder . $class . '>'
+                . '<input type="text" id="' . $this->id . '" value="' . date('\SW Y', $this->value) . '"' . $placeholder . $class . '>'
                 . '<span class="input-group-addon" id="' . $this->id . '_btn"><span class="fa fa-calendar"></span></span>'
              . '</div>';
 
