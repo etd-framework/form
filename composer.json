@@ -27,6 +27,7 @@
     "etdsolutions/requirecss": "Pour utiliser le champ ChosenList",
     "etdsolutions/domready": "Pour utiliser les champs avec JS",
     "etdsolutions/chosen": "Pour utiliser le champ ChosenList",
+    "etdsolutions/ajaxchosen": "Pour utiliser le champ AjaxChosenList",
     "etdsolutions/jquery.maskedinput": "Pour utiliser le champ MaskedText",
     "kartik-v/bootstrap-fileinput": "Pour utiliser le champ File",
     "etdsolutions/bootstrap-datetimepicker": "Pour utiliser le champ Date"
