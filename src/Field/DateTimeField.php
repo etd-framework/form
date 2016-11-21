@@ -146,7 +146,7 @@ class DateTimeField extends Field {
             ->addRequireJSModule("flatpickr", "js/vendor/flatpickr.min")
             ->addDomReadyJS(implode("\n", $js), false, "flatpickr, css!/css/vendor/flatpickr.min.css", false);
 
-        return '<input id="' . $this->id . '" type="text"  value="' . htmlspecialchars($this->value, ENT_QUOTES, "UTF-8") . '" ' . $placeholder . $class . '>';
+        return '<input id="' . $this->id . '" name="' . $this->name . '" type="text"  value="' . htmlspecialchars($this->value, ENT_QUOTES, "UTF-8") . '" ' . $placeholder . $class . '>';
 
     }
 

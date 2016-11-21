@@ -10,6 +10,7 @@
 namespace EtdSolutions\Form\Field;
 
 use EtdSolutions\Utility\RequireJSUtility;
+use Joomla\Form\Html\Select as HtmlSelect;
 
 class ChoicesField extends \Joomla\Form\Field\ListField {
 
@@ -27,6 +28,12 @@ class ChoicesField extends \Joomla\Form\Field\ListField {
             'noChoicesText'  => $text->translate("APP_GLOBAL_NO_CHOISES", ['jsSafe' => true]),
             'itemSelectText' => $text->translate("APP_GLOBAL_SELECT_OPTION", ['jsSafe' => true])
         ];
+
+        if ($this->element['class']) {
+            $this->element['class'] = (string) $this->element['class'] . " choices-select";
+        } else {
+            $this->element['class'] = "choices-select";
+        }
 
         if ($this->element['maxItemCount']) {
             $options['maxItemCount'] = (int) $this->element['maxItemCount'];
@@ -87,6 +94,9 @@ class ChoicesField extends \Joomla\Form\Field\ListField {
 
         if ($this->element['placeholderValue']) {
             $options['placeholderValue'] = (string) $this->element['placeholderValue'];
+
+            // On triche pour le placeholder sur le select.
+            $this->element['class'] = (string) $this->element['class'] . '" placeholder="' . htmlspecialchars((string) $this->element['placeholderValue'], ENT_QUOTES, "UTF-8");
         }
 
         if ($this->element['prependValue']) {
@@ -120,7 +130,7 @@ class ChoicesField extends \Joomla\Form\Field\ListField {
 
         (new RequireJSUtility())
             ->addRequireJSModule("choices", "js/vendor/choices.min")
-            ->addDomReadyJS("new choices(document.getElementById('". $this->id . "'), " . json_encode($options) . ");", false, $modules, false);
+            ->addDomReadyJS("window.choicesInstances = window.choicesInstances || {}; window.choicesInstances['". $this->id . "'] = new choices(document.getElementById('". $this->id . "'), " . json_encode($options) . ");", false, $modules, false);
 
         return parent::getInput();
     }
