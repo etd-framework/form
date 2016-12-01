@@ -67,8 +67,13 @@ class WeekField extends Field {
             ->addRequireJSModule("weekpicker", "js/vendor/week-picker.min", false, ["jquery", "moment"])
             ->addDomReadyJS(implode("\n", $js), false, "moment, weekpicker, css!/css/vendor/week-picker.min.css", false);
 
+	    $value = $this->value;
+	    if (empty($value)) {
+	    	$value = time();
+	    }
+
 	    return '<div class="input-group week-picker">'
-                . '<input type="text" id="' . $this->id . '" value="' . date('\SW Y', $this->value) . '"' . $placeholder . $class . '>'
+                . '<input type="text" readonly id="' . $this->id . '" value="' . date('\SW Y', $value) . '"' . $placeholder . $class . '>'
                 . '<span class="input-group-addon" id="' . $this->id . '_btn"><span class="fa fa-calendar"></span></span>'
              . '</div>';
 

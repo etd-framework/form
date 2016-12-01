@@ -132,6 +132,7 @@ class DateField extends Field {
 
     $js .= ".format('YYYY-MM-DD HH:mm:ss'))
     else $('#" . $this->id . "').val('');
+    $('#" . $this->id . "').trigger('change');
 });
 $('#" . $this->id . "_btn').on('click', function() {
     $('#" . $this->id . "_picker').data('DateTimePicker').show();
