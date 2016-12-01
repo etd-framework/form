@@ -41,7 +41,7 @@ class DateField extends Field {
         $minDate  = $this->element['minDate'] ? (string) $this->element['minDate'] : null;
         $maxDate  = $this->element['maxDate'] ? (string) $this->element['maxDate'] : null;
         $placeholder  = $this->element['placeholder'] ? ' placeholder="' . htmlspecialchars((string) $this->element['placeholder']) . '"' : null;
-        $class    = $this->element['class'] ? ' ' . (string) $this->element['class'] . '"' : '';
+        $class    = $this->element['class'] ? ' ' . (string) $this->element['class'] : '';
         $dayOnly  = $this->element['dayOnly'] ? ((string) $this->element['dayOnly'] == "true") : false;
         $readonly = ((string) $this->element['readonly'] == 'true') ? ' readonly="readonly"' : '';
         $disabled = ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
