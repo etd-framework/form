@@ -37,6 +37,7 @@ class DateField extends Field {
 
         $locale   = $this->element['locale'] ? (string) $this->element['locale'] : (new LanguageFactory())->getLanguage()->get('iso');
         $format   = $this->element['format'] ? (string) $this->element['format'] : 'L';
+        $valueFormat = $this->element['valueFormat'] ? (string) $this->element['valueFormat'] : 'YYYY-MM-DD HH:mm:ss';
         $minDate  = $this->element['minDate'] ? (string) $this->element['minDate'] : null;
         $maxDate  = $this->element['maxDate'] ? (string) $this->element['maxDate'] : null;
         $placeholder  = $this->element['placeholder'] ? ' placeholder="' . htmlspecialchars((string) $this->element['placeholder']) . '"' : null;
@@ -130,7 +131,7 @@ class DateField extends Field {
             $js .= ".utc()";
         }
 
-    $js .= ".format('YYYY-MM-DD HH:mm:ss'))
+    $js .= ".format('" . $valueFormat . "'))
     else $('#" . $this->id . "').val('');
     $('#" . $this->id . "').trigger('change');
 });
