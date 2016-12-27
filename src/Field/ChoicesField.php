@@ -123,14 +123,57 @@ class ChoicesField extends \Joomla\Form\Field\ListField {
             $options['itemSelectText'] = $text->translate((string) $this->element['itemSelectText'], ['jsSafe' => true]);
         }
 
+        if ($this->element['containerClass']) {
+            $options['classNames'] = [
+                'containerOuter' => (string) $this->element['containerClass']
+            ];
+        }
+
+        if ($this->element['callbackOnInit']) {
+            $options['callbackOnInit'] = (string) $this->element['callbackOnInit'];
+        }
+
+        if ($this->element['callbackOnAddItem']) {
+            $options['callbackOnAddItem'] = (string) $this->element['callbackOnAddItem'];
+        }
+
+        if ($this->element['callbackOnRemoveItem']) {
+            $options['callbackOnRemoveItem'] = (string) $this->element['callbackOnRemoveItem'];
+        }
+
+        if ($this->element['callbackOnHighlightItem']) {
+            $options['callbackOnHighlightItem'] = (string) $this->element['callbackOnHighlightItem'];
+        }
+
+        if ($this->element['callbackOnUnhighlightItem']) {
+            $options['callbackOnUnhighlightItem'] = (string) $this->element['callbackOnUnhighlightItem'];
+        }
+
+        if ($this->element['callbackOnChange']) {
+            $options['callbackOnChange'] = (string) $this->element['callbackOnChange'];
+        }
+
+        if ($this->element['callbackOnSearch']) {
+            $options['callbackOnSearch'] = (string) $this->element['callbackOnSearch'];
+        }
+
+        if ($this->element['callbackOnCreateTemplates']) {
+            $options['callbackOnCreateTemplates'] = (string) $this->element['callbackOnCreateTemplates'];
+        }
+
         $modules = "choices";
         if (($this->element['includeCSS'] && ((string) $this->element['includeCSS'] != 'false')) || !$this->element['includeCSS']) {
             $modules .= ", css!/css/vendor/choices.min.css";
         }
 
+        $options = str_replace(['"##STARTFUNC##', '##ENDFUNC##"'], "", json_encode($options));
+        $options = str_replace('##Q##', '"', $options);
+        $options = str_replace('##SLASH##', '/', $options);
+        $options = str_replace("\\\\", "\\", $options);
+
         (new RequireJSUtility())
             ->addRequireJSModule("choices", "js/vendor/choices.min")
-            ->addDomReadyJS("window.choicesInstances = window.choicesInstances || {}; window.choicesInstances['". $this->id . "'] = new choices(document.getElementById('". $this->id . "'), " . json_encode($options) . ");", false, $modules, false);
+            ->addDomReadyJS("window.choicesInstances = window.choicesInstances || {}; window.choicesInstances['". $this->id . "'] = new choices(document.getElementById('". $this->id . "'), " . $options . ");", false, $modules, false);
 
         return parent::getInput();
     }
