@@ -66,15 +66,38 @@ class AjaxChosenListField extends \Joomla\Form\Field\ListField {
 			$ajaxOptions["jsonTermKey"] = (string) $this->element["jsonTermKey"];
 		}
 
+        if ($this->element['dataCallback']) {
+            $ajaxOptions['dataCallback'] = (string) $this->element['dataCallback'];
+        }
+
+        // Data dans le XML.
+        foreach ($this->element->children() as $node) {
+		    if ($node->getName() == 'data') {
+                foreach ($node->children() as $child) {
+                    $ajaxOptions['data'][(string)$child['name']] = (string) $child['value'];
+                }
+            }
+        }
+
 		$callback = "function(d){var r=[];$.each(d,function(i,v){r.push({value:v.value,text:v.text});});return r}";
 		if (isset($this->element["callback"])) {
 			$callback = (string) $this->element["callback"];
 		}
 
+        $options = str_replace(['"##STARTFUNC##', '##ENDFUNC##"'], "", json_encode($options));
+        $options = str_replace('##Q##', '"', $options);
+        $options = str_replace('##SLASH##', '/', $options);
+        $options = str_replace("\\\\", "\\", $options);
+
+        $ajaxOptions = str_replace(['"##STARTFUNC##', '##ENDFUNC##"'], "", json_encode($ajaxOptions));
+        $ajaxOptions = str_replace('##Q##', '"', $ajaxOptions);
+        $ajaxOptions = str_replace('##SLASH##', '/', $ajaxOptions);
+        $ajaxOptions = str_replace("\\\\", "\\", $ajaxOptions);
+
 		(new RequireJSUtility())
 			->addRequireJSModule("chosen", "js/vendor/chosen.min", true, array("jquery"))
 			->addRequireJSModule("ajaxchosen", "js/vendor/ajax-chosen.min", true, array("jquery", "chosen"))
-			->addDomReadyJS("$('#" . $this->id . "').ajaxChosen(" . json_encode($ajaxOptions) . ", " . $callback . ", " . json_encode($options) . ");", false, "ajaxchosen, css!/css/vendor/chosen.min.css");
+			->addDomReadyJS("$('#" . $this->id . "').ajaxChosen(" . $ajaxOptions . ", " . $callback . ", " . $options . ");", false, "ajaxchosen, css!/css/vendor/chosen.min.css");
 
 		if ($this->element['class']) {
 			$this->element['class'] .= " chosen-select with-ajax";
