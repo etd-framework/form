@@ -58,6 +58,10 @@ class WeekField extends Field {
 		    $options['valueFormat'] = "##FUNC##" . (string) $this->element['valueFormat'] . "##FUNC##";
 	    }
 
+	    if ($this->element['showWeekNumber']) {
+		    $options['showWeekNumber'] = ((string) $options['showWeekNumber'] == "true");
+	    }
+
 	    $str = str_replace(['"##FUNC##', '##FUNC##"'], "", json_encode($options));
 
         $js[] = "var wp = new weekpicker('#" . $this->id . "', " . $str . ");$('#" . $this->id . "').data('weekpicker', wp);";
