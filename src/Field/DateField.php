@@ -62,12 +62,112 @@ class DateField extends Field {
             )
         );
 
+	    if ($this->element['showClose']) {
+		    $options['showClose'] = ($this->element['showClose'] == "true");
+	    }
+
+	    if ($this->element['showClear']) {
+		    $options['showClear'] = ($this->element['showClear'] == "true");
+	    }
+
+	    if ($this->element['showTodayButton']) {
+		    $options['showTodayButton'] = ($this->element['showTodayButton'] == "true");
+	    }
+
+	    if ($this->element['calendarWeeks']) {
+		    $options['calendarWeeks'] = ($this->element['calendarWeeks'] == "true");
+	    }
+
+	    if ($this->element['useCurrent']) {
+		    $options['useCurrent'] = ($this->element['useCurrent'] == "true");
+	    }
+
+	    if ($this->element['collapse']) {
+		    $options['collapse'] = ($this->element['collapse'] == "true");
+	    }
+
+	    if ($this->element['collapse']) {
+		    $options['collapse'] = ($this->element['collapse'] == "true");
+	    }
+
+	    if (isset($this->element['stepping'])) {
+		    $options["stepping"] = (string) $this->element['stepping'];
+	    }
+
+	    if (isset($this->element['viewMode'])) {
+		    $options["viewMode"] = (string) $this->element['viewMode'];
+	    }
+
+	    if (isset($this->element['toolbarPlacement'])) {
+		    $options["toolbarPlacement"] = (string) $this->element['toolbarPlacement'];
+	    }
+
         if (isset($this->element['default'])) {
             $options["defaultDate"] = (string) $this->element['default'];
         }
 
+        if (isset($this->element['widgetParent'])) {
+            $options["widgetParent"] = (string) $this->element['widgetParent'];
+        }
+
+        if (isset($this->element['disabledDates'])) {
+	    	if (is_array($this->element['disabledDates'])) {
+			    $options["disabledDates"] = (array) $this->element['disabledDates'];
+		    } else {
+			    $options["disabledDates"] = explode(",", (string) $this->element['disabledDates']);
+		    }
+        }
+
+	    if (isset($this->element['enabledDates'])) {
+		    if (is_array($this->element['enabledDates'])) {
+			    $options["enabledDates"] = (array) $this->element['enabledDates'];
+		    } else {
+			    $options["enabledDates"] = explode(",", (string) $this->element['enabledDates']);
+		    }
+	    }
+
+	    if (isset($this->element['daysOfWeekDisabled'])) {
+		    if (is_array($this->element['daysOfWeekDisabled'])) {
+			    $options["daysOfWeekDisabled"] = (array) $this->element['daysOfWeekDisabled'];
+		    } else {
+			    $options["daysOfWeekDisabled"] = explode(",", (string) $this->element['daysOfWeekDisabled']);
+		    }
+	    }
+
         if (isset($this->element['sideBySide'])) {
             $options["sideBySide"] = ((string) $this->element['sideBySide'] == "true");
+        }
+
+        if (isset($this->element['useStrict'])) {
+            $options["useStrict"] = ((string) $this->element['useStrict'] == "true");
+        }
+
+        if (isset($this->element['keepOpen'])) {
+            $options["keepOpen"] = ((string) $this->element['keepOpen'] == "true");
+        }
+
+        if (isset($this->element['inline'])) {
+            $options["inline"] = ((string) $this->element['inline'] == "true");
+        }
+
+        if (isset($this->element['keepInvalid'])) {
+            $options["keepInvalid"] = ((string) $this->element['keepInvalid'] == "true");
+        }
+
+        if (isset($this->element['debug'])) {
+            $options["debug"] = ((string) $this->element['debug'] == "true");
+        }
+
+        if (isset($this->element['ignoreReadonly'])) {
+            $options["ignoreReadonly"] = ((string) $this->element['ignoreReadonly'] == "true");
+        }
+
+        if (isset($this->element['allowInputToggle'])) {
+            $options["allowInputToggle"] = ((string) $this->element['allowInputToggle'] == "true");
+        }
+
+        if (isset($this->element['focusOnShow'])) {
+            $options["focusOnShow"] = ((string) $this->element['focusOnShow'] == "true");
         }
 
         if (isset($minDate)) {
