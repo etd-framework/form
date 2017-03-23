@@ -59,7 +59,7 @@ class WeekField extends Field {
 	    }
 
 	    if ($this->element['showWeekNumber']) {
-		    $options['showWeekNumber'] = ((string) $options['showWeekNumber'] == "true");
+		    $options['showWeekNumber'] = ((string) $this->element['showWeekNumber'] == "true");
 	    }
 
 	    $str = str_replace(['"##FUNC##', '##FUNC##"'], "", json_encode($options));
