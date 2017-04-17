@@ -49,7 +49,9 @@ class InlineCheckboxesField extends \Joomla\Form\Field {
         $html = array();
 
         // Initialize some field attributes.
-        $class = $this->element['class'] ? ' class="checkbox-group ' . (string) $this->element['class'] . '"' : ' class="checkbox-group"';
+        $class  = $this->element['class'] ? ' class="checkbox-group ' . (string) $this->element['class'] . '"' : ' class="checkbox-group"';
+        $radiolabelclass = $this->element['radiolabelclass'] ? (string) $this->element['radiolabelclass'] : 'checkbox-inline';
+        $custom = ((string) $this->element['custom'] == "true");
 
         // Start the radio field output.
         $html[] = '<span id="' . $this->id . '"' . $class . '>';
@@ -68,10 +70,18 @@ class InlineCheckboxesField extends \Joomla\Form\Field {
             // Initialize some JavaScript option attributes.
             $onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
 
-            $html[] = '<label class="checkbox-inline" for="' . $this->id . $i . '">';
+            if ($custom) {
+                $radiolabelclass .= ' custom';
+            }
+
+            $html[] = '<label class="' . $radiolabelclass . '" for="' . $this->id . $i . '">';
 
             $html[] = '<input type="checkbox" id="' . $this->id . $i . '" name="' . $this->name . '"' . ' value="'
                 . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $class . $onclick . $disabled . '>';
+
+            if ($custom) {
+                $html[] = '<label for="' . $this->id . $i . '"' . $class . '></label>';
+            }
 
             $html[] = ' ' . $option->text;
 
