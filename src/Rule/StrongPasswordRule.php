@@ -43,7 +43,7 @@ class StrongPasswordRule extends Rule {
 	    $container  = $form->getContainer();
         $user       = $container->get('user')->load();
 	    $password   = $container->get('db')->setQuery("SELECT password FROM #__users WHERE id = " . $user->id)->loadResult();
-        if (!password_verify($value, $password)) {
+        if (password_verify($value, $password)) {
             return false;
         }
 
