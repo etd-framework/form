@@ -20,13 +20,19 @@ class ChoicesField extends \Joomla\Form\Field\ListField {
 
         $text = $this->getText();
 
+        $addItemText = "APP_GLOBAL_ADD_OPTION";
+        if ($this->element['addItemText']) {
+            $addItemText = (string) $this->element['addItemText'];
+        }
+
         $options = [
             'removeItems'    => false,
             'shouldSort'     => false,
             'noResultsText'  => $text->translate("APP_GLOBAL_NO_RESULT", ['jsSafe' => true]),
             'loadingText'    => $text->translate("APP_GLOBAL_LOADING", ['jsSafe' => true]),
             'noChoicesText'  => $text->translate("APP_GLOBAL_NO_CHOISES", ['jsSafe' => true]),
-            'itemSelectText' => $text->translate("APP_GLOBAL_SELECT_OPTION", ['jsSafe' => true])
+            'itemSelectText' => $text->translate("APP_GLOBAL_SELECT_OPTION", ['jsSafe' => true]),
+            'addItemText'    => '##STARTFUNC##function(v){return \'' . $text->sprintf($addItemText, "'+v+'", ['jsSafe' => true]) . '\'}##ENDFUNC##',
         ];
 
         if ($this->element['class']) {
