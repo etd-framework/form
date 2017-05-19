@@ -34,7 +34,6 @@ class DateTimeField extends Field {
     protected function getInput() {
 
         $js = [];
-        $js_append = [];
 
         $defaultAltFormat = 'd/m/Y';
         $defaultFormat = 'Y-m-d';
@@ -49,11 +48,12 @@ class DateTimeField extends Field {
             $defaultAltFormat .= ':S';
         }
 
-        $class       = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
-        $placeholder = $this->element['placeholder'] ? ' placeholder="' . htmlspecialchars((string) $this->element['placeholder']) . '"' : null;
-        $altFormat   = $this->element['displayFormat'] ? (string) $this->element['displayFormat'] : $defaultAltFormat;
-        $minDate     = $this->element['minDate'] ? (string) $this->element['minDate'] : null;
-        $maxDate     = $this->element['maxDate'] ? (string) $this->element['maxDate'] : null;
+        $class         = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
+        $placeholder   = $this->element['placeholder'] ? ' placeholder="' . htmlspecialchars((string) $this->element['placeholder']) . '"' : null;
+        $altFormat     = $this->element['displayFormat'] ? (string) $this->element['displayFormat'] : $defaultAltFormat;
+        $defaultFormat = $this->element['dateFormat'] ? (string) $this->element['dateFormat'] : $defaultFormat;
+        $minDate       = $this->element['minDate'] ? (string) $this->element['minDate'] : null;
+        $maxDate       = $this->element['maxDate'] ? (string) $this->element['maxDate'] : null;
 
         $options = [
             "altInput"   => true,
