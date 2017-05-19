@@ -36,7 +36,7 @@ class DateTimeField extends Field {
         $js = [];
 
         $defaultAltFormat = 'd/m/Y';
-        $defaultFormat = 'Y-m-d';
+        $defaultFormat    = 'Y-m-d';
 
         if ($this->element['enableTime'] == "true") {
             $defaultAltFormat .= ' H:i';
@@ -118,8 +118,10 @@ class DateTimeField extends Field {
         if (isset($minDate)) {
             if (strpos($minDate, 'field:') !== false) {
 
-                $fieldName = substr($minDate, 6);
-                $field     = $this->form->getField($fieldName);
+                $parts     = explode(".", substr($minDate, 6), 2);
+                $fieldName = isset($parts[1]) ? $parts[1] : $parts[0];
+                $groupName = isset($parts[1]) ? $parts[0] : null;
+                $field     = $this->form->getField($fieldName, $groupName);
 
                 if ($field !== false) {
 
@@ -142,8 +144,10 @@ document.getElementById('" . $field->id . "').addEventListener('change', functio
         if (isset($maxDate)) {
             if (strpos($maxDate, 'field:') !== false) {
 
-                $fieldName = substr($maxDate, 6);
-                $field     = $this->form->getField($fieldName);
+                $parts     = explode(".", substr($maxDate, 6), 2);
+                $fieldName = isset($parts[1]) ? $parts[1] : $parts[0];
+                $groupName = isset($parts[1]) ? $parts[0] : null;
+                $field     = $this->form->getField($fieldName, $groupName);
 
                 if ($field !== false) {
 
