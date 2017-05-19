@@ -34,6 +34,7 @@ class DateTimeField extends Field {
     protected function getInput() {
 
         $js = [];
+        $js_append = [];
 
         $defaultAltFormat = 'd/m/Y';
         $defaultFormat = 'Y-m-d';
@@ -48,9 +49,11 @@ class DateTimeField extends Field {
             $defaultAltFormat .= ':S';
         }
 
-        $class        = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
-        $placeholder  = $this->element['placeholder'] ? ' placeholder="' . htmlspecialchars((string) $this->element['placeholder']) . '"' : null;
-        $altFormat    = $this->element['displayFormat'] ? (string) $this->element['displayFormat'] : $defaultAltFormat;
+        $class       = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
+        $placeholder = $this->element['placeholder'] ? ' placeholder="' . htmlspecialchars((string) $this->element['placeholder']) . '"' : null;
+        $altFormat   = $this->element['displayFormat'] ? (string) $this->element['displayFormat'] : $defaultAltFormat;
+        $minDate     = $this->element['minDate'] ? (string) $this->element['minDate'] : null;
+        $maxDate     = $this->element['maxDate'] ? (string) $this->element['maxDate'] : null;
 
         $options = [
             "altInput"   => true,
@@ -112,12 +115,51 @@ class DateTimeField extends Field {
             $options['utc'] = ($this->element['utc'] == "true");
         }
 
-        if ($this->element['minDate']) {
-            $options['minDate'] = (string) $this->element['minDate'];
+        if (isset($minDate)) {
+            if (strpos($minDate, 'field:') !== false) {
+
+                $fieldName = substr($minDate, 6);
+                $field     = $this->form->getField($fieldName);
+
+                if ($field !== false) {
+
+                    $js[] = "var old_min_" . $field->id . "; 
+document.getElementById('" . $field->id . "').addEventListener('change', function() {
+    var v = document.getElementById('" . $field->id . "')._flatpickr.selectedDates[0];
+    if (v && (!old_min_" . $field->id . " || old_min_" . $field->id . ".getTime() !== v.getTime())) {
+        old_min_" . $field->id . " = v;
+        document.getElementById('" . $this->id . "')._flatpickr.set('minDate', v);                 
+    }
+});\n";
+
+                }
+
+            } else {
+                $options['minDate'] = $minDate;
+            }
         }
 
-        if ($this->element['maxDate']) {
-            $options['maxDate'] = (string) $this->element['maxDate'];
+        if (isset($maxDate)) {
+            if (strpos($maxDate, 'field:') !== false) {
+
+                $fieldName = substr($maxDate, 6);
+                $field     = $this->form->getField($fieldName);
+
+                if ($field !== false) {
+
+                    $js[] = "var old_max_" . $field->id . "; 
+document.getElementById('" . $field->id . "').addEventListener('change', function() {
+    var v = document.getElementById('" . $field->id . "')._flatpickr.selectedDates[0];
+    if (v && (!old_max_" . $field->id . " || old_max_" . $field->id . ".getTime() !== v.getTime())) {
+        old_max_" . $field->id . " = v;
+        document.getElementById('" . $this->id . "')._flatpickr.set('maxDate', v);                 
+    }
+});\n";
+                }
+
+            } else {
+                $options['maxDate'] = $maxDate;
+            }
         }
 
         if ($this->element['wrap']) {
