@@ -58,7 +58,7 @@ class DateTimeField extends Field {
         $options = [
             "altInput"   => true,
             "altFormat"  => $this->getText()->translate($altFormat),
-            "utc"        => true,
+            "utc"        => false,
             "time_24hr"  => true,
             "dateFormat" => $defaultFormat
         ];
@@ -186,7 +186,16 @@ document.getElementById('" . $field->id . "').addEventListener('change', functio
             $options['weekNumbers'] = ($this->element['weekNumbers'] == "true");
         }
 
-        $js[] = "document.getElementById('" . $this->id . "').flatpickr(" . json_encode($options) . ");";
+        if (!$options['utc']) {
+            $options['onChange'] = "##STARTFUNC##function(d,s,i) { if (d.length) document.getElementById('" . $this->id . "').value = i.formatDate(d[0].fp_toUTC(), i.config.dateFormat) }##ENDFUNC##";
+        }
+
+        $options = str_replace(['"##STARTFUNC##', '##ENDFUNC##"'], "", json_encode($options));
+        $options = str_replace('##Q##', '"', $options);
+        $options = str_replace('##SLASH##', '/', $options);
+        $options = str_replace("\\\\", "\\", $options);
+
+        $js[] = "document.getElementById('" . $this->id . "').flatpickr(" . $options . ");";
 
         (new RequireJSUtility())
             ->addRequireJSModule("flatpickr", "js/vendor/flatpickr.min")
