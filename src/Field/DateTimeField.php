@@ -186,7 +186,7 @@ document.getElementById('" . $field->id . "').addEventListener('change', functio
             $options['weekNumbers'] = ($this->element['weekNumbers'] == "true");
         }
 
-        if (!$options['utc']) {
+        if (!$options['utc'] && !$this->element['localAsValue']) {
             $options['onChange'] = "##STARTFUNC##function(d,s,i) { if (d.length) document.getElementById('" . $this->id . "').value = i.formatDate(d[0].fp_toUTC(), i.config.dateFormat) }##ENDFUNC##";
         }
 
