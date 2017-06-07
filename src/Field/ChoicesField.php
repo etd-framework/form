@@ -74,8 +74,12 @@ class ChoicesField extends \Joomla\Form\Field\ListField {
             $options['paste'] = ((string) $this->element['paste'] == 'true');
         }
 
-        if ($this->element['search']) {
-            $options['search'] = ((string) $this->element['search'] == 'true');
+        if ($this->element['searchEnabled']) {
+            $options['searchEnabled'] = ((string) $this->element['searchEnabled'] == 'true');
+        }
+
+        if ($this->element['searchChoices']) {
+            $options['searchChoices'] = ((string) $this->element['searchChoices'] == 'true');
         }
 
         if ($this->element['searchFloor']) {
