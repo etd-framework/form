@@ -9,7 +9,7 @@
 
 namespace EtdSolutions\Form\Rule;
 
-use EtdSolutions\Form\Form;
+use Joomla\Form\Form;
 use Joomla\Form\Rule;
 use Joomla\Registry\Registry;
 
