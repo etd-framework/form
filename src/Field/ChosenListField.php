@@ -43,6 +43,10 @@ class ChosenListField extends \Joomla\Form\Field\ListField {
             $options['allow_single_deselect'] = (string) $this->element["allow_single_deselect"] == "true";
         }
 
+        if ($this->element["search_contains"]) {
+            $options['search_contains'] = (string) $this->element["search_contains"] == "true";
+        }
+
         (new RequireJSUtility())
             ->addRequireJSModule("chosen", "js/vendor/chosen.min", true, array("jquery"))
             ->addDomReadyJS("$('#" . $this->id . "').chosen(" . json_encode($options) . ");", false, "chosen, css!/css/vendor/chosen.min.css");
