@@ -9,8 +9,6 @@
 
 namespace EtdSolutions\Form\Field;
 
-use Joomla\Form\Field\RadioField;
-
 class RadioButtonsField extends RadioField {
 
     /**
@@ -40,12 +38,13 @@ class RadioButtonsField extends RadioField {
             $checked = ((string) $option->value == (string) $this->value) ? ' checked="checked"' : '';
             $active  = ((string) $option->value == (string) $this->value) ? ' active' : '';
             $class = !empty($option->class) ? ' class="' . $option->class . '"' : '';
+            $tooltip = !empty($option->tooltip) ? ' data-toggle="tooltip" data-title="' . htmlspecialchars($option->tooltip, ENT_COMPAT, 'UTF-8') . '"' : '';
             $disabled = (!empty($option->disable) || $this->element['disabled']) ? ' disabled="disabled"' : '';
 
             // Initialize some JavaScript option attributes.
             $onclick = !empty($option->onclick) ? ' onclick="' . $option->onclick . '"' : '';
 
-            $html[] = '<label class="btn' . $buttonClass . $active . '" for="' . $this->id . $i . '">';
+            $html[] = '<label class="btn' . $buttonClass . $active . '" for="' . $this->id . $i . '"' . $tooltip . '>';
 
             $html[] = '<input type="radio" id="' . $this->id . $i . '" name="' . $this->name . '"' . ' value="'
                 . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"  autocomplete="off"' . $checked . $class . $onclick . $disabled . '>';
