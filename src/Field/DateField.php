@@ -98,6 +98,10 @@ class DateField extends Field {
 		    $options["viewMode"] = (string) $this->element['viewMode'];
 	    }
 
+	    if (isset($this->element['viewDate'])) {
+		    $options["viewDate"] = (string) $this->element['viewDate'];
+	    }
+
 	    if (isset($this->element['toolbarPlacement'])) {
 		    $options["toolbarPlacement"] = (string) $this->element['toolbarPlacement'];
 	    }
